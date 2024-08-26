@@ -1,6 +1,6 @@
 package io.github.julymira.blogue.domain.controller.dto;
 
-import io.github.julymira.blogue.domain.model.Post;
+import io.github.julymira.blogue.domain.model.bo.Post;
 
 import java.time.LocalDateTime;
 

@@ -1,4 +1,4 @@
-package io.github.julymira.blogue.domain.model;
+package io.github.julymira.blogue.domain.model.bo;
 
 import jakarta.persistence.*;
 

@@ -1,6 +1,5 @@
-package io.github.julymira.blogue.domain.model;
+package io.github.julymira.blogue.domain.model.bo;
 
-import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import jakarta.persistence.*;
 
 import java.util.Objects;
