@@ -1,11 +1,10 @@
-package io.github.julymira.blogue.domain.controller.dto;
+package io.github.julymira.blogue.domain.model.dto;
 
 import jakarta.validation.ConstraintViolation;
 
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
-import java.util.SimpleTimeZone;
 import java.util.stream.Collectors;
 
 public class ResponseError {

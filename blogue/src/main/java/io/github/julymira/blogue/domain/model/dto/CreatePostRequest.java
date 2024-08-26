@@ -1,4 +1,4 @@
-package io.github.julymira.blogue.domain.controller.dto;
+package io.github.julymira.blogue.domain.model.dto;
 
 public class CreatePostRequest {
 

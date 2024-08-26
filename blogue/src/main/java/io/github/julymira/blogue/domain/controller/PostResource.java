@@ -1,12 +1,11 @@
 package io.github.julymira.blogue.domain.controller;
 
-import io.github.julymira.blogue.domain.controller.dto.CreatePostRequest;
-import io.github.julymira.blogue.domain.controller.dto.PostResponse;
-import io.github.julymira.blogue.domain.model.Post;
-import io.github.julymira.blogue.domain.model.User;
+import io.github.julymira.blogue.domain.model.dto.CreatePostRequest;
+import io.github.julymira.blogue.domain.model.dto.PostResponse;
+import io.github.julymira.blogue.domain.model.entity.Post;
+import io.github.julymira.blogue.domain.model.entity.User;
 import io.github.julymira.blogue.domain.repository.PostRepository;
 import io.github.julymira.blogue.domain.repository.UserRepository;
-import io.quarkus.hibernate.orm.panache.PanacheQuery;
 import io.quarkus.panache.common.Sort;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;

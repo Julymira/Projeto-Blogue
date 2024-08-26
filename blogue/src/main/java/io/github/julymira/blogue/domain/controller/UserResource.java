@@ -1,9 +1,9 @@
 package io.github.julymira.blogue.domain.controller;
 
-import io.github.julymira.blogue.domain.controller.dto.ResponseError;
-import io.github.julymira.blogue.domain.model.User;
+import io.github.julymira.blogue.domain.model.dto.ResponseError;
+import io.github.julymira.blogue.domain.model.entity.User;
 import io.github.julymira.blogue.domain.repository.UserRepository;
-import io.github.julymira.blogue.domain.controller.dto.CreateUserRequest;
+import io.github.julymira.blogue.domain.model.dto.CreateUserRequest;
 
 import io.quarkus.hibernate.orm.panache.PanacheQuery;
 import jakarta.inject.Inject;
