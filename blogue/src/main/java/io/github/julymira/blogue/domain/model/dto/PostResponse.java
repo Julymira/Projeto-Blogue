@@ -8,10 +8,13 @@ public class PostResponse {
     private String text;
     private LocalDateTime dateTime;
 
+    private String imageUrl;
+
     public static PostResponse fromEntity(Post post){
         var response = new PostResponse();
         response.setText(post.getText());
         response.setDateTime(post.getDateTime());
+        response.setImageUrl(post.getImageUrl());
         return response;
     }
 
@@ -29,5 +32,13 @@ public class PostResponse {
 
     public void setDateTime(LocalDateTime dateTime) {
         this.dateTime = dateTime;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 }

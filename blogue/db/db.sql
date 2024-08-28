@@ -11,3 +11,9 @@ CREATE TABLE POSTS(
 	dateTime timestamp not null,
 	user_id bigint not null references USERS(id)
 )
+
+ALTER TABLE posts
+ADD COLUMN image_url VARCHAR(255);
+
+ALTER TABLE posts
+ALTER COLUMN post_text TYPE VARCHAR(1000);
