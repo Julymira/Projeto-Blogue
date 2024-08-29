@@ -59,7 +59,7 @@ public class PostResource {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
 
-        List<Post> posts = postBO.getPostDAO().find("user", user).list();
+        List<Post> posts = postBO.getPostDAO().findByUser(user);
         List<PostResponse> postResponses = posts.stream()
                 .map(PostResponse::fromEntity)
                 .collect(Collectors.toList());
