@@ -2,7 +2,7 @@ package io.github.julymira.blogue.domain.model.dto;
 
 import jakarta.validation.constraints.NotBlank;
 
-public class CreateUserRequest {
+public class UserRegisterDTO {
 
     @NotBlank(message =  "Name is Required")
     private String name;
@@ -12,6 +12,12 @@ public class CreateUserRequest {
 
     @NotBlank(message =  "Password is Required")
     private String password;
+
+    public UserRegisterDTO(String name, String email, String password) {
+        this.name = name;
+        this.email = email;
+        this.password = password;
+    }
 
     public String getName() {
         return name;
