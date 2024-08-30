@@ -3,9 +3,9 @@ package io.github.julymira.blogue.domain.controller;
 import io.github.julymira.blogue.domain.model.bo.UserBO;
 import io.github.julymira.blogue.domain.model.dto.ResponseError;
 import io.github.julymira.blogue.domain.model.dto.UserLoginDTO;
+import io.github.julymira.blogue.domain.model.dto.UserRegisterDTO;
 import io.github.julymira.blogue.domain.model.entity.User;
 import io.github.julymira.blogue.domain.repository.UserRepository;
-import io.github.julymira.blogue.domain.model.dto.UserRegisterDTO;
 
 import io.quarkus.hibernate.orm.panache.PanacheQuery;
 import jakarta.inject.Inject;
@@ -23,9 +23,11 @@ import java.util.Set;
 @Produces(MediaType.APPLICATION_JSON)
 public class UserResource {
 
-    //usando repositório panache temporariamente para fim de testes
     private final UserRepository repository;
     private final Validator validator;
+
+    @Inject
+    UserBO userBO;
 
     @Inject
     public UserResource(UserRepository repository, Validator validator){
@@ -33,10 +35,6 @@ public class UserResource {
         this.repository = repository;
         this.validator = validator;
     }
-
-    @Inject
-    UserBO userBO;
-
 
     @Path("/save")
     @POST
@@ -65,8 +63,6 @@ public class UserResource {
         return Response.ok("Usuário salvo com sucesso!").build();
     }
 
-
-    //usando repositório panache temporariamente para fim de testes
     @GET
     public  Response listAllUsers(){
         PanacheQuery<User> query = repository.findAll();
