@@ -2,7 +2,7 @@ package io.github.julymira.blogue.domain.model.dto;
 
 import jakarta.validation.constraints.NotBlank;
 
-public class CreateUserRequest {
+public class UserRegisterDTO {
 
     @NotBlank(message =  "Name is Required")
     private String name;

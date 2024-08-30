@@ -1,9 +1,11 @@
 package io.github.julymira.blogue.domain.controller;
 
+import io.github.julymira.blogue.domain.model.bo.UserBO;
 import io.github.julymira.blogue.domain.model.dto.ResponseError;
+import io.github.julymira.blogue.domain.model.dto.UserLoginDTO;
 import io.github.julymira.blogue.domain.model.entity.User;
 import io.github.julymira.blogue.domain.repository.UserRepository;
-import io.github.julymira.blogue.domain.model.dto.CreateUserRequest;
+import io.github.julymira.blogue.domain.model.dto.UserRegisterDTO;
 
 import io.quarkus.hibernate.orm.panache.PanacheQuery;
 import jakarta.inject.Inject;
@@ -30,26 +32,26 @@ public class UserResource {
         this.repository = repository;
         this.validator = validator;
     }
-    
+
+    @Inject
+    UserBO userBO;
+
 
     @POST
+    @Path("/register")
     @Transactional
-    public Response createUser(CreateUserRequest userRequest){
+    public Response createUser(UserRegisterDTO userRegisterDTO){
+        userBO.saveUser(userRegisterDTO);
+        return Response.ok().build();
+    }
 
-        Set<ConstraintViolation<CreateUserRequest>> violations = validator.validate(userRequest);
-        if(!violations.isEmpty()){
-            ResponseError responseError = ResponseError.createFromValidation(violations);
-            return Response.status(400).entity(responseError).build();
-        }
 
-        User user = new User();
-        user.setPassword(userRequest.getPassword());
-        user.setEmail(userRequest.getEmail());
-        user.setName(userRequest.getName());
+    @POST
+    @Path("/login")
+    public Response login(UserLoginDTO userLoginDTO){
+        String token = userBO.login(userLoginDTO);
 
-        repository.persist(user);
-
-        return  Response.ok(user).build();
+        return Response.ok(token).build();
     }
 
     @GET
@@ -76,7 +78,7 @@ public class UserResource {
     @PUT
     @Path("{id}")
     @Transactional
-    public Response updateUser( @PathParam("id") Long id, CreateUserRequest userData){
+    public Response updateUser( @PathParam("id") Long id, UserRegisterDTO userData){
         User user = repository.findById(id);
 
         if(user != null){
