@@ -1,9 +1,11 @@
 package io.github.julymira.blogue.domain.controller;
 
+import io.github.julymira.blogue.domain.model.bo.UserBO;
 import io.github.julymira.blogue.domain.model.dto.ResponseError;
+import io.github.julymira.blogue.domain.model.dto.UserLoginDTO;
+import io.github.julymira.blogue.domain.model.dto.UserRegisterDTO;
 import io.github.julymira.blogue.domain.model.entity.User;
 import io.github.julymira.blogue.domain.repository.UserRepository;
-import io.github.julymira.blogue.domain.model.dto.CreateUserRequest;
 
 import io.quarkus.hibernate.orm.panache.PanacheQuery;
 import jakarta.inject.Inject;
@@ -25,31 +27,40 @@ public class UserResource {
     private final Validator validator;
 
     @Inject
+    UserBO userBO;
+
+    @Inject
     public UserResource(UserRepository repository, Validator validator){
 
         this.repository = repository;
         this.validator = validator;
     }
-    
 
+    @Path("/save")
     @POST
-    @Transactional
-    public Response createUser(CreateUserRequest userRequest){
+    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+    public Response saveUser(
+            @FormParam("nome") String name,
+            @FormParam("email") String email,
+            @FormParam("senha") String senha) {
 
-        Set<ConstraintViolation<CreateUserRequest>> violations = validator.validate(userRequest);
-        if(!violations.isEmpty()){
-            ResponseError responseError = ResponseError.createFromValidation(violations);
-            return Response.status(400).entity(responseError).build();
-        }
+        UserRegisterDTO userRegisterDTO = new UserRegisterDTO(name, email, senha);
+        userBO.saveUser(userRegisterDTO);
 
-        User user = new User();
-        user.setPassword(userRequest.getPassword());
-        user.setEmail(userRequest.getEmail());
-        user.setName(userRequest.getName());
+        return Response.ok("Usuário salvo com sucesso!").build();
+    }
 
-        repository.persist(user);
+    @Path("/Login")
+    @POST
+    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+    public Response LoginUser(
+            @FormParam("email") String email,
+            @FormParam("senha") String senha) {
 
-        return  Response.ok(user).build();
+        UserLoginDTO userLoginDTO = new UserLoginDTO(email, senha);
+        userBO.login(userLoginDTO);
+
+        return Response.ok("Usuário salvo com sucesso!").build();
     }
 
     @GET
@@ -76,7 +87,7 @@ public class UserResource {
     @PUT
     @Path("{id}")
     @Transactional
-    public Response updateUser( @PathParam("id") Long id, CreateUserRequest userData){
+    public Response updateUser( @PathParam("id") Long id, UserRegisterDTO userData){
         User user = repository.findById(id);
 
         if(user != null){
