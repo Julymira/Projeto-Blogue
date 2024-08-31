@@ -17,12 +17,25 @@ public class PostBO {
     }
 
     private void validatePost(Post post) {
-        if (post.getText() == null || post.getText().length() > 1000) {
-            throw new IllegalArgumentException("O texto do post não pode ser nulo e deve ter no máximo 1000 caracteres.");
+
+        if(post.getText() == null){
+            throw new IllegalArgumentException("O texto não pode ser nula.");
+        } else if (post.getText().length() > 1000) {
+            throw new IllegalArgumentException("O texto deve ter no máximo 255 caracteres.");
         }
-        if (post.getImageUrl() != null && post.getImageUrl().length() > 255) {
+
+        if (post.getImageUrl() == null) {
+            throw new IllegalArgumentException("A URL da imagem não pode ser nula.");
+        } else if (post.getImageUrl().length() > 255) {
             throw new IllegalArgumentException("A URL da imagem deve ter no máximo 255 caracteres.");
         }
+
+        if(post.getTitle() == null){
+            throw new IllegalArgumentException("O título não pode ser nula.");
+        } else if (post.getTitle().length() > 150) {
+            throw new IllegalArgumentException("O título deve ter no máximo 255 caracteres.");
+        }
+
     }
 
     public PostDAO getPostDAO() {

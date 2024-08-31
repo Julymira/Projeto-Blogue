@@ -11,6 +11,7 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import io.smallrye.jwt.build.Jwt;
 import jakarta.ws.rs.NotAuthorizedException;
+import jakarta.ws.rs.core.Response;
 import org.mindrot.jbcrypt.BCrypt;
 
 import java.util.Arrays;
@@ -47,11 +48,14 @@ public class UserBO {
             throw new NotAuthorizedException("email ou senha inválidos");
         }
 
-        return Jwt.issuer("blogue")
-                .subject("blogue")
-                .groups(new HashSet<>(Arrays.asList("admin", "writer")))
-                .expiresAt(System.currentTimeMillis() + 3600)
-                .sign();
+         String token = Jwt.issuer("blogue")
+                        .subject("blogue")
+                        .groups(new HashSet<>(Arrays.asList("admin", "writer")))
+                        .expiresAt(System.currentTimeMillis() + 3600)
+                        .sign();
+
+
+        return "Logado com sucesso!";
     }
 
 
@@ -59,27 +63,5 @@ public class UserBO {
         return userDAO.listAll();
     }
 
-    public boolean deleteUser(Long id) {
-        User user = userDAO.findById(id);
-        if (user != null) {
-            userDAO.delete(user);
-            return true;
-        }
-        return false;
-    }
-
-    public User updateUser(Long id, UserRegisterDTO userData) {
-        User user = userDAO.findById(id);
-        if (user != null) {
-            user.setName(userData.getName());
-            user.setEmail(userData.getEmail());
-            if (userData.getPassword() != null && !userData.getPassword().isEmpty()) {
-                user.setPassword(BCrypt.hashpw(userData.getPassword(), BCrypt.gensalt())); // Criptografar senha
-            }
-            userDAO.persist(user);
-            return user;
-        }
-        return null;
-    }
 
 }

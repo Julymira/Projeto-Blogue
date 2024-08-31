@@ -2,12 +2,11 @@ package io.github.julymira.blogue.domain.controller;
 
 
 import io.github.julymira.blogue.domain.model.bo.PostBO;
+import io.github.julymira.blogue.domain.model.dao.UserDAO;
 import io.github.julymira.blogue.domain.model.dto.CreatePostRequest;
 import io.github.julymira.blogue.domain.model.dto.PostResponse;
 import io.github.julymira.blogue.domain.model.entity.Post;
 import io.github.julymira.blogue.domain.model.entity.User;
-import io.github.julymira.blogue.domain.model.dao.PostDAO;
-import io.github.julymira.blogue.domain.repository.UserRepository;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.*;
@@ -19,27 +18,31 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 
-@Path("/users/{userId}/posts")
+@Path("/users")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 public class PostResource {
 
     @Inject
-    UserRepository userRepository;
-    @Inject
     PostBO postBO;
 
+    @Inject
+    UserDAO userDAO;
+
     @POST
+    @Path("/{userId}/AddPosts")
+    @Produces(MediaType.APPLICATION_JSON)
     @Transactional
     public Response savePost(@PathParam("userId") Long userId, CreatePostRequest request) {
-        User user = userRepository.findById(userId);
+        User user = userDAO.findById(userId);
         if (user == null) {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
 
         Post post = new Post();
-        post.setText(request.getText());
         post.setImageUrl(request.getImageUrl());
+        post.setTitle(request.getTitle());
+        post.setText(request.getText());
         post.setUser(user);
         post.setDateTime(LocalDateTime.now());
 
@@ -53,8 +56,24 @@ public class PostResource {
     }
 
     @GET
+    @Path("/AllPosts")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response listAllPosts() {
+
+        List<Post> posts = postBO.getPostDAO().listAll();
+        List<PostResponse> postResponses = posts.stream()
+                .map(PostResponse::fromEntity)
+                .collect(Collectors.toList());
+
+        return Response.ok(postResponses).build();
+
+    }
+
+    @GET
+    @Path("/{userId}/posts")
+    @Produces(MediaType.APPLICATION_JSON)
     public Response listPosts(@PathParam("userId") Long userId) {
-        User user = userRepository.findById(userId);
+        User user = userDAO.findById(userId);
         if (user == null) {
             return Response.status(Response.Status.NOT_FOUND).build();
         }

@@ -2,9 +2,26 @@ package io.github.julymira.blogue.domain.model.dto;
 
 public class CreatePostRequest {
 
+    private String imageUrl;
+    private String title;
     private String text;
 
-    private String imageUrl;
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
 
     public String getText() {
         return text;
@@ -14,11 +31,4 @@ public class CreatePostRequest {
         this.text = text;
     }
 
-    public String getImageUrl() {
-        return imageUrl;
-    }
-
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
-    }
 }

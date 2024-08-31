@@ -31,14 +31,6 @@ public class UserDAO{
     }
 
     @Transactional
-    public void delete(User user) {
-        if (!entityManager.contains(user)) {
-            user = entityManager.merge(user);
-        }
-        entityManager.remove(user);
-    }
-
-    @Transactional
     public User findById(Long id){
         return entityManager.find(User.class, id);
 

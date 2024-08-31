@@ -5,19 +5,36 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="075a86c7-afdb-492e-a5a6-4367bb354b7d" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/uiDesigner.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/blogue/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/blogue/pom.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/blogue/db/db.sql" beforeDir="false" afterPath="$PROJECT_DIR$/blogue/db/db.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/blogue/jwt/privateKey.pem" beforeDir="false" afterPath="$PROJECT_DIR$/blogue/src/main/resources/jwt/privateKey.pem" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/blogue/jwt/publicKey.pem" beforeDir="false" afterPath="$PROJECT_DIR$/blogue/src/main/resources/jwt/publicKey.pem" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/blogue/jwt/rsaPrivateKey.pem" beforeDir="false" afterPath="$PROJECT_DIR$/blogue/src/main/resources/jwt/rsaPrivateKey.pem" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/blogue/src/main/java/io/github/julymira/blogue/domain/controller/PostResource.java" beforeDir="false" afterPath="$PROJECT_DIR$/blogue/src/main/java/io/github/julymira/blogue/domain/controller/PostResource.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/blogue/src/main/java/io/github/julymira/blogue/domain/controller/UserResource.java" beforeDir="false" afterPath="$PROJECT_DIR$/blogue/src/main/java/io/github/julymira/blogue/domain/controller/UserResource.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/blogue/src/main/java/io/github/julymira/blogue/domain/model/bo/PostBO.java" beforeDir="false" afterPath="$PROJECT_DIR$/blogue/src/main/java/io/github/julymira/blogue/domain/model/bo/PostBO.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/blogue/src/main/java/io/github/julymira/blogue/domain/model/bo/UserBO.java" beforeDir="false" afterPath="$PROJECT_DIR$/blogue/src/main/java/io/github/julymira/blogue/domain/model/bo/UserBO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/blogue/src/main/java/io/github/julymira/blogue/domain/model/dto/CreateUserRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/blogue/src/main/java/io/github/julymira/blogue/domain/model/dto/UserRegisterDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/blogue/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/blogue/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/blogue/src/main/java/io/github/julymira/blogue/domain/model/dao/UserDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/blogue/src/main/java/io/github/julymira/blogue/domain/model/dao/UserDAO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/blogue/src/main/java/io/github/julymira/blogue/domain/model/dto/CreatePostRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/blogue/src/main/java/io/github/julymira/blogue/domain/model/dto/CreatePostRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/blogue/src/main/java/io/github/julymira/blogue/domain/model/dto/PostResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/blogue/src/main/java/io/github/julymira/blogue/domain/model/dto/PostResponse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/blogue/src/main/java/io/github/julymira/blogue/domain/model/dto/UserLoginDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/blogue/src/main/java/io/github/julymira/blogue/domain/model/dto/UserLoginDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/blogue/src/main/java/io/github/julymira/blogue/domain/model/dto/UserRegisterDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/blogue/src/main/java/io/github/julymira/blogue/domain/model/dto/UserRegisterDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/blogue/src/main/java/io/github/julymira/blogue/domain/model/entity/Post.java" beforeDir="false" afterPath="$PROJECT_DIR$/blogue/src/main/java/io/github/julymira/blogue/domain/model/entity/Post.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/blogue/src/main/java/io/github/julymira/blogue/domain/repository/PostRepository.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/blogue/src/main/java/io/github/julymira/blogue/domain/repository/UserRepository.java" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -25,23 +42,29 @@
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "customColor": "",
-  "associatedIndex": 8
-}]]></component>
+  <component name="ProjectColorInfo">{
+  &quot;customColor&quot;: &quot;&quot;,
+  &quot;associatedIndex&quot;: 8
+}</component>
   <component name="ProjectId" id="2lONstRNRXdgmLpSjUSPE2lgxWH" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "master",
-    "last_opened_file_path": "C:/Users/Julyana Mira/IdeaProjects/PWproject/blogue"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/Julyana Mira/IdeaProjects/Projeto-Blogue&quot;
   }
-}]]></component>
+}</component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\Julyana Mira\IdeaProjects\PWproject\blogue\src\main\resources" />
+    </key>
+  </component>
   <component name="RunManager">
     <configuration name="blogue" type="MavenRunConfiguration" factoryName="Maven">
       <MavenSettings>

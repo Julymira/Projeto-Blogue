@@ -5,17 +5,39 @@ import io.github.julymira.blogue.domain.model.entity.Post;
 import java.time.LocalDateTime;
 
 public class PostResponse {
+    private Long id;
     private String text;
     private LocalDateTime dateTime;
-
     private String imageUrl;
+    private String title;
+    private Long userId;
 
-    public static PostResponse fromEntity(Post post){
-        var response = new PostResponse();
-        response.setText(post.getText());
-        response.setDateTime(post.getDateTime());
-        response.setImageUrl(post.getImageUrl());
-        return response;
+    public PostResponse(Long id, String text, LocalDateTime dateTime, String imageUrl, String title, Long userId) {
+        this.id = id;
+        this.text = text;
+        this.dateTime = dateTime;
+        this.imageUrl = imageUrl;
+        this.title = title;
+        this.userId = userId;
+    }
+
+    public static PostResponse fromEntity(Post post) {
+        return new PostResponse(
+                post.getId(),
+                post.getText(),
+                post.getDateTime(),
+                post.getImageUrl(),
+                post.getTitle(),
+                post.getUser().getId()
+        );
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getText() {
@@ -40,5 +62,21 @@ public class PostResponse {
 
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 }
