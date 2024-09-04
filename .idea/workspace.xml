@@ -5,19 +5,44 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="075a86c7-afdb-492e-a5a6-4367bb354b7d" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/uiDesigner.xml" beforeDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/dbnavigator.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/blogue/src/main/java/io/github/julymira/blogue/domain/controller/CommentResource.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/blogue/src/main/java/io/github/julymira/blogue/domain/controller/LoginController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/blogue/src/main/java/io/github/julymira/blogue/domain/controller/RegisterController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/blogue/src/main/java/io/github/julymira/blogue/domain/model/bo/CommentBO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/blogue/src/main/java/io/github/julymira/blogue/domain/model/dao/CommentDAO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/blogue/src/main/java/io/github/julymira/blogue/domain/model/dto/CommentResponse.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/blogue/src/main/java/io/github/julymira/blogue/domain/model/dto/CreateCommentRequest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/blogue/src/main/java/io/github/julymira/blogue/domain/model/entity/Comment.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/blogue/jwt/privateKey.pem" beforeDir="false" afterPath="$PROJECT_DIR$/blogue/src/main/resources/jwt/privateKey.pem" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/blogue/jwt/publicKey.pem" beforeDir="false" afterPath="$PROJECT_DIR$/blogue/src/main/resources/jwt/publicKey.pem" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/blogue/jwt/rsaPrivateKey.pem" beforeDir="false" afterPath="$PROJECT_DIR$/blogue/src/main/resources/jwt/rsaPrivateKey.pem" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/blogue/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/blogue/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/blogue/src/main/java/io/github/julymira/blogue/domain/controller/UserResource.java" beforeDir="false" afterPath="$PROJECT_DIR$/blogue/src/main/java/io/github/julymira/blogue/domain/controller/UserResource.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/blogue/src/main/java/io/github/julymira/blogue/domain/model/bo/UserBO.java" beforeDir="false" afterPath="$PROJECT_DIR$/blogue/src/main/java/io/github/julymira/blogue/domain/model/bo/UserBO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/blogue/src/main/java/io/github/julymira/blogue/domain/model/dto/CreateUserRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/blogue/src/main/java/io/github/julymira/blogue/domain/model/dto/UserRegisterDTO.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/blogue/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/blogue/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/blogue/src/main/resources/templates/view/assets/Desktop/banner1-desktop.png" beforeDir="false" afterPath="$PROJECT_DIR$/blogue/src/main/resources/META-INF/resources/assets/Desktop/banner1-desktop.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/blogue/src/main/resources/templates/view/assets/Desktop/banner2-desktop.png" beforeDir="false" afterPath="$PROJECT_DIR$/blogue/src/main/resources/META-INF/resources/assets/Desktop/banner2-desktop.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/blogue/src/main/resources/templates/view/assets/Desktop/banner3-desktop.png" beforeDir="false" afterPath="$PROJECT_DIR$/blogue/src/main/resources/META-INF/resources/assets/Desktop/banner3-desktop.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/blogue/src/main/resources/templates/view/assets/favicon.png" beforeDir="false" afterPath="$PROJECT_DIR$/blogue/src/main/resources/META-INF/resources/assets/favicon.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/blogue/src/main/resources/templates/view/assets/logo-meteora.png" beforeDir="false" afterPath="$PROJECT_DIR$/blogue/src/main/resources/META-INF/resources/assets/logo-meteora.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/blogue/src/main/resources/templates/view/estilo.css" beforeDir="false" afterPath="$PROJECT_DIR$/blogue/src/main/resources/templates/estilo.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/blogue/src/main/resources/templates/view/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/blogue/src/main/resources/templates/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/blogue/src/main/resources/templates/view/login.html" beforeDir="false" afterPath="$PROJECT_DIR$/blogue/src/main/resources/templates/login.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/blogue/src/main/resources/templates/view/register.html" beforeDir="false" afterPath="$PROJECT_DIR$/blogue/src/main/resources/templates/register.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/blogue/src/main/resources/templates/view/usuario.qute.html" beforeDir="false" afterPath="$PROJECT_DIR$/blogue/src/main/resources/templates/usuario.qute.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -25,24 +50,43 @@
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "customColor": "",
-  "associatedIndex": 8
-}]]></component>
+  <component name="ProjectColorInfo">{
+  &quot;customColor&quot;: &quot;&quot;,
+  &quot;associatedIndex&quot;: 8
+}</component>
   <component name="ProjectId" id="2lONstRNRXdgmLpSjUSPE2lgxWH" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "master",
-    "last_opened_file_path": "C:/Users/Julyana Mira/IdeaProjects/PWproject/blogue"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Maven.blogue.executor&quot;: &quot;Run&quot;,
+    &quot;Maven.quarkus:dev.executor&quot;: &quot;Run&quot;,
+    &quot;Quarkus.blogue.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/marlo/Downloads/Projeto-Blogue/blogue/src/main/resources/templates&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
-  <component name="RunManager">
+}</component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\marlo\Downloads\Projeto-Blogue\blogue\src\main\resources\META-INF\resources" />
+      <recent name="C:\Users\marlo\Downloads\Projeto-Blogue\blogue\src\main\resources" />
+      <recent name="C:\Users\marlo\Downloads\Projeto-Blogue\blogue\src\main\resources\templates" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Quarkus.blogue">
     <configuration name="blogue" type="MavenRunConfiguration" factoryName="Maven">
       <MavenSettings>
         <option name="myGeneralSettings" />
@@ -74,6 +118,7 @@
                 <option value="quarkus:dev" />
               </list>
             </option>
+            <option name="multimoduleDir" />
             <option name="pomFileName" />
             <option name="profilesMap">
               <map />
@@ -88,6 +133,121 @@
       </MavenSettings>
       <method v="2" />
     </configuration>
+    <configuration name="clean install" type="MavenRunConfiguration" factoryName="Maven">
+      <MavenSettings>
+        <option name="myGeneralSettings" />
+        <option name="myRunnerSettings" />
+        <option name="myRunnerParameters">
+          <MavenRunnerParameters>
+            <option name="cmdOptions" />
+            <option name="profiles">
+              <set />
+            </option>
+            <option name="goals">
+              <list>
+                <option value="mvn" />
+                <option value="clean" />
+                <option value="install" />
+              </list>
+            </option>
+            <option name="multimoduleDir" />
+            <option name="pomFileName" />
+            <option name="profilesMap">
+              <map />
+            </option>
+            <option name="projectsCmdOptionValues">
+              <list />
+            </option>
+            <option name="resolveToWorkspace" value="false" />
+            <option name="workingDirPath" value="$PROJECT_DIR$/blogue" />
+          </MavenRunnerParameters>
+        </option>
+      </MavenSettings>
+      <method v="2" />
+    </configuration>
+    <configuration name="quarkus:dev" type="MavenRunConfiguration" factoryName="Maven">
+      <MavenSettings>
+        <option name="myGeneralSettings" />
+        <option name="myRunnerSettings" />
+        <option name="myRunnerParameters">
+          <MavenRunnerParameters>
+            <option name="cmdOptions" />
+            <option name="profiles">
+              <set />
+            </option>
+            <option name="goals">
+              <list>
+                <option value="mvn" />
+                <option value="quarkus:dev" />
+              </list>
+            </option>
+            <option name="multimoduleDir" />
+            <option name="pomFileName" />
+            <option name="profilesMap">
+              <map />
+            </option>
+            <option name="projectsCmdOptionValues">
+              <list />
+            </option>
+            <option name="resolveToWorkspace" value="false" />
+            <option name="workingDirPath" value="$PROJECT_DIR$/blogue" />
+          </MavenRunnerParameters>
+        </option>
+      </MavenSettings>
+      <method v="2" />
+    </configuration>
+    <configuration name="blogue" type="QuarkusRunConfigurationType" factoryName="Quarkus" nameIsGenerated="true">
+      <module name="blogue" />
+      <QsMavenRunConfiguration>
+        <MavenSettings>
+          <option name="myGeneralSettings" />
+          <option name="myRunnerSettings" />
+          <option name="myRunnerParameters">
+            <MavenRunnerParameters>
+              <option name="cmdOptions" />
+              <option name="profiles">
+                <set />
+              </option>
+              <option name="goals">
+                <list>
+                  <option value="quarkus:dev" />
+                </list>
+              </option>
+              <option name="multimoduleDir" />
+              <option name="pomFileName" value="pom.xml" />
+              <option name="profilesMap">
+                <map />
+              </option>
+              <option name="projectsCmdOptionValues">
+                <list />
+              </option>
+              <option name="resolveToWorkspace" value="false" />
+              <option name="workingDirPath" value="$PROJECT_DIR$/blogue" />
+            </MavenRunnerParameters>
+          </option>
+        </MavenSettings>
+        <targetMavenLocalRepo />
+        <emulateTerminal>false</emulateTerminal>
+        <profile>dev</profile>
+      </QsMavenRunConfiguration>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <list>
+      <item itemvalue="Maven.blogue" />
+      <item itemvalue="Maven.clean install" />
+      <item itemvalue="Maven.quarkus:dev" />
+      <item itemvalue="Quarkus.blogue" />
+    </list>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-jdk-9f38398b9061-39b83d9b5494-intellij.indexing.shared.core-IU-241.18034.62" />
+        <option value="bundled-js-predefined-1d06a55b98c1-0b3e54e931b4-JavaScript-IU-241.18034.62" />
+      </set>
+    </attachedChunks>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
@@ -97,7 +257,13 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1725047373163</updated>
+      <workItem from="1725060870145" duration="7435000" />
+      <workItem from="1725069425856" duration="21677000" />
+      <workItem from="1725239201459" duration="1947000" />
     </task>
     <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
   </component>
 </project>

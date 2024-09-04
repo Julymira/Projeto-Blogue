@@ -1,8 +1,6 @@
 package io.github.julymira.blogue.domain.controller;
 
 import io.github.julymira.blogue.domain.model.bo.UserBO;
-import io.github.julymira.blogue.domain.model.dto.ResponseError;
-import io.github.julymira.blogue.domain.model.dto.UserLoginDTO;
 import io.github.julymira.blogue.domain.model.dto.UserRegisterDTO;
 import io.github.julymira.blogue.domain.model.entity.User;
 import io.github.julymira.blogue.domain.repository.UserRepository;
@@ -10,7 +8,6 @@ import io.github.julymira.blogue.domain.repository.UserRepository;
 import io.quarkus.hibernate.orm.panache.PanacheQuery;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
-import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validator;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
@@ -50,18 +47,7 @@ public class UserResource {
         return Response.ok("Usuário salvo com sucesso!").build();
     }
 
-    @Path("/Login")
-    @POST
-    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-    public Response LoginUser(
-            @FormParam("email") String email,
-            @FormParam("senha") String senha) {
 
-        UserLoginDTO userLoginDTO = new UserLoginDTO(email, senha);
-        userBO.login(userLoginDTO);
-
-        return Response.ok("Usuário salvo com sucesso!").build();
-    }
 
     @GET
     public  Response listAllUsers(){
