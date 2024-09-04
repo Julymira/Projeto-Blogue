@@ -6,7 +6,6 @@ import io.github.julymira.blogue.domain.model.dto.CreatePostRequest;
 import io.github.julymira.blogue.domain.model.dto.PostResponse;
 import io.github.julymira.blogue.domain.model.entity.Post;
 import io.github.julymira.blogue.domain.model.entity.User;
-import io.github.julymira.blogue.domain.model.dao.PostDAO;
 import io.github.julymira.blogue.domain.repository.UserRepository;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
