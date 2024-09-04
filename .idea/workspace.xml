@@ -4,14 +4,31 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="075a86c7-afdb-492e-a5a6-4367bb354b7d" name="Changes" comment="">
+    <list default="true" id="075a86c7-afdb-492e-a5a6-4367bb354b7d" name="Changes" comment="Conexão estabelecida com o Front">
+      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.vscode/settings.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/blogue/jwt/privateKey.pem" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/blogue/jwt/publicKey.pem" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/blogue/jwt/rsaPrivateKey.pem" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/blogue/src/main/resources/META-INF/resources/assets/Desktop/banner1-desktop.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/blogue/src/main/resources/META-INF/resources/assets/Desktop/banner2-desktop.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/blogue/src/main/resources/META-INF/resources/assets/Desktop/banner3-desktop.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/blogue/src/main/resources/META-INF/resources/assets/favicon.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/blogue/src/main/resources/META-INF/resources/assets/logo-meteora.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/blogue/src/main/resources/templates/estilo.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/blogue/src/main/resources/templates/index.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/blogue/src/main/resources/templates/login.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/blogue/src/main/resources/templates/register.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/blogue/src/main/resources/templates/usuario.qute.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/uiDesigner.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/blogue/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/blogue/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/blogue/src/main/java/io/github/julymira/blogue/domain/controller/LoginResource.java" beforeDir="false" afterPath="$PROJECT_DIR$/blogue/src/main/java/io/github/julymira/blogue/domain/controller/LoginResource.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/blogue/src/main/java/io/github/julymira/blogue/domain/controller/RegisterResource.java" beforeDir="false" afterPath="$PROJECT_DIR$/blogue/src/main/java/io/github/julymira/blogue/domain/controller/RegisterResource.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/blogue/src/main/java/io/github/julymira/blogue/domain/controller/UserResource.java" beforeDir="false" afterPath="$PROJECT_DIR$/blogue/src/main/java/io/github/julymira/blogue/domain/controller/UserResource.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/blogue/src/main/java/io/github/julymira/blogue/domain/model/bo/UserBO.java" beforeDir="false" afterPath="$PROJECT_DIR$/blogue/src/main/java/io/github/julymira/blogue/domain/model/bo/UserBO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/blogue/src/main/java/io/github/julymira/blogue/domain/model/dto/CreateUserRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/blogue/src/main/java/io/github/julymira/blogue/domain/model/dto/UserRegisterDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/blogue/src/main/java/io/github/julymira/blogue/domain/model/dto/CreateUserRequest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/blogue/src/main/java/io/github/julymira/blogue/domain/model/entity/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/blogue/src/main/java/io/github/julymira/blogue/domain/model/entity/User.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/blogue/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/blogue/src/main/resources/application.properties" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -25,10 +42,10 @@
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "customColor": "",
-  "associatedIndex": 8
-}]]></component>
+  <component name="ProjectColorInfo">{
+  &quot;customColor&quot;: &quot;&quot;,
+  &quot;associatedIndex&quot;: 8
+}</component>
   <component name="ProjectId" id="2lONstRNRXdgmLpSjUSPE2lgxWH" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
@@ -36,13 +53,18 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "Maven.blogue.executor": "Run",
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "git-widget-placeholder": "master",
-    "last_opened_file_path": "C:/Users/Julyana Mira/IdeaProjects/PWproject/blogue"
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/Users/Julyana Mira/IdeaProjects/PWproject/blogue",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
-  <component name="RunManager">
+  <component name="RunManager" selected="Maven.blogue">
     <configuration name="blogue" type="MavenRunConfiguration" factoryName="Maven">
       <MavenSettings>
         <option name="myGeneralSettings" />
@@ -74,6 +96,7 @@
                 <option value="quarkus:dev" />
               </list>
             </option>
+            <option name="multimoduleDir" />
             <option name="pomFileName" />
             <option name="profilesMap">
               <map />
@@ -88,6 +111,56 @@
       </MavenSettings>
       <method v="2" />
     </configuration>
+    <configuration name="blogue" type="QuarkusRunConfigurationType" factoryName="Quarkus" nameIsGenerated="true">
+      <module name="blogue" />
+      <QsMavenRunConfiguration>
+        <MavenSettings>
+          <option name="myGeneralSettings" />
+          <option name="myRunnerSettings" />
+          <option name="myRunnerParameters">
+            <MavenRunnerParameters>
+              <option name="cmdOptions" />
+              <option name="profiles">
+                <set />
+              </option>
+              <option name="goals">
+                <list>
+                  <option value="quarkus:dev" />
+                </list>
+              </option>
+              <option name="multimoduleDir" />
+              <option name="pomFileName" value="pom.xml" />
+              <option name="profilesMap">
+                <map />
+              </option>
+              <option name="projectsCmdOptionValues">
+                <list />
+              </option>
+              <option name="resolveToWorkspace" value="false" />
+              <option name="workingDirPath" value="$PROJECT_DIR$/blogue" />
+            </MavenRunnerParameters>
+          </option>
+        </MavenSettings>
+        <targetMavenLocalRepo />
+        <emulateTerminal>false</emulateTerminal>
+        <profile>dev</profile>
+      </QsMavenRunConfiguration>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <list>
+      <item itemvalue="Maven.blogue" />
+      <item itemvalue="Quarkus.blogue" />
+    </list>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-jdk-9f38398b9061-39b83d9b5494-intellij.indexing.shared.core-IU-241.18034.62" />
+        <option value="bundled-js-predefined-1d06a55b98c1-0b3e54e931b4-JavaScript-IU-241.18034.62" />
+      </set>
+    </attachedChunks>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
@@ -97,7 +170,15 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1725047373163</updated>
+      <workItem from="1725060679795" duration="173000" />
     </task>
     <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Conexão estabelecida com o Front" />
+    <option name="LAST_COMMIT_MESSAGE" value="Conexão estabelecida com o Front" />
   </component>
 </project>

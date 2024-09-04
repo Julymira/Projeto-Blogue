@@ -15,6 +15,7 @@ import jakarta.validation.Validator;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import org.hibernate.sql.Template;
 
 import java.util.Set;
 
@@ -28,6 +29,8 @@ public class UserResource {
 
     @Inject
     UserBO userBO;
+    @Inject
+    Template login;
 
     @Inject
     public UserResource(UserRepository repository, Validator validator){

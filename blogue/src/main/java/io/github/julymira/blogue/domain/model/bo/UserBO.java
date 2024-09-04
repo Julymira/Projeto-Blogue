@@ -2,7 +2,7 @@ package io.github.julymira.blogue.domain.model.bo;
 
 import io.github.julymira.blogue.domain.model.dao.UserDAO;
 import io.github.julymira.blogue.domain.model.entity.User;
-import io.github.julymira.blogue.domain.model.dto.CreateUserRequest;
+//import io.github.julymira.blogue.domain.model.dto.CreateUserRequest;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 
@@ -34,15 +34,15 @@ public class UserBO {
         return false;
     }
 
-    public User updateUser(Long id, CreateUserRequest userData) {
-        User user = userDAO.findById(id);
-        if (user != null) {
-            user.setName(userData.getName());
-            user.setEmail(userData.getEmail());
-            user.setPassword(userData.getPassword());
-            userDAO.persist(user);
-            return user;
-        }
-        return null;
-    }
+//    public User updateUser(Long id, CreateUserRequest userData) {
+//        User user = userDAO.findById(id);
+//        if (user != null) {
+//            user.setName(userData.getName());
+//            user.setEmail(userData.getEmail());
+//            user.setPassword(userData.getPassword());
+//            userDAO.persist(user);
+//            return user;
+//        }
+//        return null;
+//    }
 }

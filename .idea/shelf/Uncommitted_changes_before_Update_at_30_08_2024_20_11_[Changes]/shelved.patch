@@ -1,0 +1,1043 @@
+Index: blogue/src/main/resources/application.properties
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>quarkus.datasource.db-kind=postgresql\r\nquarkus.datasource.username=postgres\r\nquarkus.datasource.password=123\r\n\r\nquarkus.datasource.jdbc.url=jdbc:postgresql://localhost:5434/blogue\r\nquarkus.datasource.jdbc.max-size=16\r\nquarkus.datasource.db-version=9.6.0\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>ISO-8859-1
+===================================================================
+diff --git a/blogue/src/main/resources/application.properties b/blogue/src/main/resources/application.properties
+--- a/blogue/src/main/resources/application.properties	(revision d32bdf70f60e38bb9edb186a3f4bda4c4b822c7a)
++++ b/blogue/src/main/resources/application.properties	(date 1725007810925)
+@@ -1,7 +1,8 @@
+ quarkus.datasource.db-kind=postgresql
+ quarkus.datasource.username=postgres
+-quarkus.datasource.password=123
++quarkus.datasource.password=Dente1234
+ 
+-quarkus.datasource.jdbc.url=jdbc:postgresql://localhost:5434/blogue
++quarkus.datasource.jdbc.url=jdbc:postgresql://localhost:3306/blogue
+ quarkus.datasource.jdbc.max-size=16
+ quarkus.datasource.db-version=9.6.0
++
+Index: blogue/src/main/java/io/github/julymira/blogue/domain/controller/UserResource.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package io.github.julymira.blogue.domain.controller;\r\n\r\nimport io.github.julymira.blogue.domain.model.dto.ResponseError;\r\nimport io.github.julymira.blogue.domain.model.entity.User;\r\nimport io.github.julymira.blogue.domain.repository.UserRepository;\r\nimport io.github.julymira.blogue.domain.model.dto.CreateUserRequest;\r\n\r\nimport io.quarkus.hibernate.orm.panache.PanacheQuery;\r\nimport jakarta.inject.Inject;\r\nimport jakarta.transaction.Transactional;\r\nimport jakarta.validation.ConstraintViolation;\r\nimport jakarta.validation.Validator;\r\nimport jakarta.ws.rs.*;\r\nimport jakarta.ws.rs.core.MediaType;\r\nimport jakarta.ws.rs.core.Response;\r\n\r\nimport java.util.Set;\r\n\r\n@Path(\"/users\")\r\n@Consumes(MediaType.APPLICATION_JSON)\r\n@Produces(MediaType.APPLICATION_JSON)\r\npublic class UserResource {\r\n\r\n    private final UserRepository repository;\r\n    private final Validator validator;\r\n\r\n    @Inject\r\n    public UserResource(UserRepository repository, Validator validator){\r\n\r\n        this.repository = repository;\r\n        this.validator = validator;\r\n    }\r\n    \r\n\r\n    @POST\r\n    @Transactional\r\n    public Response createUser(CreateUserRequest userRequest){\r\n\r\n        Set<ConstraintViolation<CreateUserRequest>> violations = validator.validate(userRequest);\r\n        if(!violations.isEmpty()){\r\n            ResponseError responseError = ResponseError.createFromValidation(violations);\r\n            return Response.status(400).entity(responseError).build();\r\n        }\r\n\r\n        User user = new User();\r\n        user.setPassword(userRequest.getPassword());\r\n        user.setEmail(userRequest.getEmail());\r\n        user.setName(userRequest.getName());\r\n\r\n        repository.persist(user);\r\n\r\n        return  Response.ok(user).build();\r\n    }\r\n\r\n    @GET\r\n    public  Response listAllUsers(){\r\n        PanacheQuery<User> query = repository.findAll();\r\n        return Response.ok(query.list()).build();\r\n    }\r\n\r\n    @DELETE\r\n    @Path(\"{id}\")\r\n    @Transactional\r\n    //  /users/id\r\n    public Response deleteUser( @PathParam(\"id\") Long id){\r\n        User user = repository.findById(id);\r\n\r\n        if(user != null){\r\n            repository.delete(user);\r\n            return Response.noContent().build();\r\n        }\r\n\r\n        return Response.status(Response.Status.NOT_FOUND).build();\r\n    }\r\n\r\n    @PUT\r\n    @Path(\"{id}\")\r\n    @Transactional\r\n    public Response updateUser( @PathParam(\"id\") Long id, CreateUserRequest userData){\r\n        User user = repository.findById(id);\r\n\r\n        if(user != null){\r\n            user.setName(userData.getName());\r\n            user.setEmail(userData.getEmail());\r\n            user.setPassword(userData.getPassword());\r\n            return Response.noContent().build();\r\n        }\r\n\r\n        return Response.status(Response.Status.NOT_FOUND).build();\r\n    }\r\n\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/blogue/src/main/java/io/github/julymira/blogue/domain/controller/UserResource.java b/blogue/src/main/java/io/github/julymira/blogue/domain/controller/UserResource.java
+--- a/blogue/src/main/java/io/github/julymira/blogue/domain/controller/UserResource.java	(revision d32bdf70f60e38bb9edb186a3f4bda4c4b822c7a)
++++ b/blogue/src/main/java/io/github/julymira/blogue/domain/controller/UserResource.java	(date 1725058988239)
+@@ -1,20 +1,23 @@
+ package io.github.julymira.blogue.domain.controller;
+ 
++import io.github.julymira.blogue.domain.model.bo.UserBO;
+ import io.github.julymira.blogue.domain.model.dto.ResponseError;
++import io.github.julymira.blogue.domain.model.dto.UserLoginDTO;
++import io.github.julymira.blogue.domain.model.dto.UserRegisterDTO;
+ import io.github.julymira.blogue.domain.model.entity.User;
+ import io.github.julymira.blogue.domain.repository.UserRepository;
+ import io.github.julymira.blogue.domain.model.dto.CreateUserRequest;
+ 
+ import io.quarkus.hibernate.orm.panache.PanacheQuery;
++import io.quarkus.qute.TemplateInstance;
++import io.quarkus.qute.Template;
+ import jakarta.inject.Inject;
+ import jakarta.transaction.Transactional;
+-import jakarta.validation.ConstraintViolation;
+ import jakarta.validation.Validator;
+ import jakarta.ws.rs.*;
+ import jakarta.ws.rs.core.MediaType;
+ import jakarta.ws.rs.core.Response;
+ 
+-import java.util.Set;
+ 
+ @Path("/users")
+ @Consumes(MediaType.APPLICATION_JSON)
+@@ -24,32 +27,51 @@
+     private final UserRepository repository;
+     private final Validator validator;
+ 
++    @Inject
++    Template login;
++    @Inject
++    UserBO userBO;
++
+     @Inject
+     public UserResource(UserRepository repository, Validator validator){
+ 
+         this.repository = repository;
+         this.validator = validator;
+     }
+-    
++
++    @Path("/pageLogin")
++    @GET
++    @Produces(MediaType.TEXT_HTML)
++    public TemplateInstance getLogin() {
++        return login.instance();
++    }
+ 
++    @Path("/save")
++    @POST
++    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
++    public Response saveUser(
++            @FormParam("nome") String name,
++            @FormParam("email") String email,
++            @FormParam("senha") String senha) {
++
++        UserRegisterDTO userRegisterDTO = new UserRegisterDTO(name, email, senha);
++        userBO.saveUser(userRegisterDTO);
++
++        return Response.ok("Usuário salvo com sucesso!").build();
++    }
++
++    @Path("/Login")
+     @POST
+     @Transactional
+-    public Response createUser(CreateUserRequest userRequest){
+-
+-        Set<ConstraintViolation<CreateUserRequest>> violations = validator.validate(userRequest);
+-        if(!violations.isEmpty()){
+-            ResponseError responseError = ResponseError.createFromValidation(violations);
+-            return Response.status(400).entity(responseError).build();
+-        }
++    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
++    public Response LoginUser(
++            @FormParam("email") String email,
++            @FormParam("senha") String senha) {
+ 
+-        User user = new User();
+-        user.setPassword(userRequest.getPassword());
+-        user.setEmail(userRequest.getEmail());
+-        user.setName(userRequest.getName());
++        UserLoginDTO userLoginDTO = new UserLoginDTO(email, senha);
++        userBO.login(userLoginDTO);
+ 
+-        repository.persist(user);
+-
+-        return  Response.ok(user).build();
++        return Response.ok("Usuário salvo com sucesso!").build();
+     }
+ 
+     @GET
+Index: blogue/src/main/resources/templates/view/login.html
+===================================================================
+diff --git a/blogue/src/main/resources/templates/view/login.html b/blogue/src/main/resources/templates/view/login.html
+deleted file mode 100644
+--- a/blogue/src/main/resources/templates/view/login.html	(revision d32bdf70f60e38bb9edb186a3f4bda4c4b822c7a)
++++ /dev/null	(revision d32bdf70f60e38bb9edb186a3f4bda4c4b822c7a)
+@@ -1,87 +0,0 @@
+-<!DOCTYPE html>
+-
+-<html lang="en">
+-
+-<head>
+-    <meta charset="UTF-8">
+-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+-    <link rel="shortcut icon" href="./assets/favicon.png" type="image/x-icon">
+-    <title>Meteora</title>
+-
+-    <link rel="stylesheet" type="text/css" href="estilo.css">
+-
+-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+-
+-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+-          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+-</head>
+-
+-<body>
+-
+-<nav class="navbar navbar-expand-md bg-black navbar-dark">
+-    <div class="container-fluid">
+-        <a class="navbar-brand" href="#">
+-            <h1 class="m-0"><img class="d-block" src="./assets/logo-meteora.png" alt="Logo da loja Meteora"></h1>
+-        </a>
+-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+-                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+-                aria-label="Toggle navigation">
+-            <span class="navbar-toggler-icon"></span>
+-        </button>
+-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+-            <ul class="navbar-nav me-auto">
+-                <li class="nav-item">
+-                    <a class="nav-link active" aria-current="page" href="index.html">Home</a>
+-                </li>
+-                <li class="nav-item">
+-                    <a class="nav-link" href="register.html">Registar</a>
+-                </li>
+-
+-            </ul>
+-            <form class="d-flex" role="search">
+-                <input class="form-control me-2 rounded-0" type="search" placeholder="Digite o produto"
+-                       aria-label="Search">
+-                <button class="btn btn-outline-light rounded-0" type="submit">Buscar</button>
+-            </form>
+-        </div>
+-    </div>
+-</nav>
+-
+-
+-<div class="container">
+-    <div class="col-sm-6" ng-model="pesquisaC" id="login-box">
+-        <div id="login-box-interno">
+-            <div id="login-box-label"><h1>Faça Seu Login</h1></div>
+-            <form action="http://localhost:8080/pathLoginController/Login">
+-                <div class="form-group row">
+-                    <label for="email" class="col-sm-2 col-form-label">E-mail</label>
+-                    <div class="col-sm-10">
+-                        <input type="text" class="form-control" id="email">
+-                    </div>
+-                </div>
+-
+-                <div class="form-group row">
+-                    <label for="senha" class="col-sm-2 col-form-label">Senha</label>
+-                    <div class="col-sm-10">
+-                        <input type="password" class="form-control" id="senha">
+-                    </div>
+-                </div>
+-
+-                <button type="button" class="btn btn-primary" ng-click="logarC()">Entrar</button>
+-                <br><br>
+-
+-                <button type="button" class="btn btn-default" onclick="document.location='register.html'">Não tem conta?
+-                    Cadastre-se
+-                </button>
+-            </form>
+-        </div>
+-    </div>
+-</div>
+-
+-
+-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+-        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+-        crossorigin="anonymous"></script>
+-</body>
+-
+-</html>
+\ No newline at end of file
+Index: blogue/src/main/resources/templates/view/estilo.css
+===================================================================
+diff --git a/blogue/src/main/resources/templates/view/estilo.css b/blogue/src/main/resources/templates/view/estilo.css
+deleted file mode 100644
+--- a/blogue/src/main/resources/templates/view/estilo.css	(revision d32bdf70f60e38bb9edb186a3f4bda4c4b822c7a)
++++ /dev/null	(revision d32bdf70f60e38bb9edb186a3f4bda4c4b822c7a)
+@@ -1,83 +0,0 @@
+-.texto-menor {
+-    font-size: 13px;
+-}
+-
+-.divs-facilidades {
+-    width: 325px;
+-}
+-
+-.div-novidades {
+-    width: 325px;
+-}
+-
+-@media(min-width: 768px) {
+-
+-    .div-novidades {
+-        width: 696px;
+-    }
+-
+-}
+-
+-.botao-lilas {
+-    background-color: #9353FF;
+-}
+-
+-.verde-limao {
+-    color: #DAFF01;
+-}
+-
+-.posicao{
+-    top: 60%;
+-}
+-
+-@media(max-width: 767px){
+-    .posicao{
+-        top:60%;
+-    }
+-}
+-
+-
+-
+-.login-container {
+-            background-color: #fff;
+-            padding: 20px;
+-            border-radius: 8px;
+-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+-            width: 300px;
+-        }
+-        .login-container h2 {
+-            margin-bottom: 20px;
+-            font-size: 24px;
+-            color: #333;
+-        }
+-        .form-group {
+-            margin-bottom: 15px;
+-        }
+-        .form-group label {
+-            display: block;
+-            font-size: 14px;
+-            color: #666;
+-            margin-bottom: 5px;
+-        }
+-        .form-group input {
+-            width: 100%;
+-            padding: 10px;
+-            font-size: 14px;
+-            border: 1px solid #ccc;
+-            border-radius: 4px;
+-            box-sizing: border-box;
+-        }
+-        .login-container button {
+-            width: 100%;
+-            padding: 10px;
+-            background-color: #007BFF;
+-            border: none;
+-            color: white;
+-            font-size: 16px;
+-            border-radius: 4px;
+-            cursor: pointer;
+-        }
+-        .login-container button:hover {
+-            background-color: #0056b3;
+-        }
+-
+Index: blogue/src/main/resources/templates/view/index.html
+===================================================================
+diff --git a/blogue/src/main/resources/templates/view/index.html b/blogue/src/main/resources/templates/view/index.html
+deleted file mode 100644
+--- a/blogue/src/main/resources/templates/view/index.html	(revision d32bdf70f60e38bb9edb186a3f4bda4c4b822c7a)
++++ /dev/null	(revision d32bdf70f60e38bb9edb186a3f4bda4c4b822c7a)
+@@ -1,253 +0,0 @@
+-<!DOCTYPE html>
+-
+-<html lang="en">
+-
+-<head>
+-    <meta charset="UTF-8">
+-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+-    <link rel="shortcut icon" href="./assets/favicon.png" type="image/x-icon">
+-    <title>Meteora</title>
+-
+-    <link rel="stylesheet" type="text/css" href="estilo.css">
+-
+-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+-
+-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+-        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+-</head>
+-
+-<body>
+-
+-    <nav class="navbar navbar-expand-md bg-black navbar-dark">
+-        <div class="container-fluid">
+-            <a class="navbar-brand" href="#">
+-                <h1 class="m-0"><img class="d-block" src="./assets/logo-meteora.png" alt="Logo da loja Meteora"></h1>
+-            </a>
+-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+-                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+-                aria-label="Toggle navigation">
+-                <span class="navbar-toggler-icon"></span>
+-            </button>
+-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+-                <ul class="navbar-nav me-auto">
+-                    <li class="nav-item">
+-                        <a class="nav-link active" aria-current="page" href="#">Home</a>
+-                    </li>
+-                    <li class="nav-item">
+-                        <a class="nav-link" href="login.html">Logar</a>
+-                    </li>
+-                    <li class="nav-item">
+-                        <a class="nav-link" href="register.html">Registrar</a>
+-                    </li>
+-                </ul>
+-                <form class="d-flex" role="search">
+-                    <input class="form-control me-2 rounded-0" type="search" placeholder="Digite o produto"
+-                        aria-label="Search">
+-                    <button class="btn btn-outline-light rounded-0" type="submit">Buscar</button>
+-                </form>
+-            </div>
+-        </div>
+-    </nav>
+-
+-    <div id="carouselExampleCaptions" class="carousel slide" data-bs-ride="carousel">
+-        <div class="carousel-indicators">
+-            <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" class="active"
+-                aria-current="true" aria-label="Slide 1"></button>
+-            <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="1"
+-                aria-label="Slide 2"></button>
+-            <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="2"
+-                aria-label="Slide 3"></button>
+-        </div>
+-        <div class="carousel-inner">
+-            <div class="carousel-item active">
+-              <img class="w-100 img-fluid d-md-none" src="./assets/Mobile/banner1-mobile.png"
+-                alt="Modelo feminina vestindo blusa rosa fluorescente, em fundo lilás.">
+-              <img class="w-100 img-fluid d-none d-md-block d-xl-none" src="./assets/Tablet/banner1-tablet.png"
+-                alt="Modelo feminina vestindo blusa rosa fluorescente, em fundo lilás.">
+-              <img class="w-100 img-fluid d-none d-xl-block" src="./assets/Desktop/banner1-desktop.png"
+-                alt="Modelo feminina vestindo blusa rosa fluorescente, em fundo lilás.">
+-            </div>
+-            <div class="carousel-item position-relative">
+-              <img class="w-100 img-fluid d-md-none" src="./assets/Mobile/banner2-mobile.png"
+-                alt="Modelo feminina utilizando óculos escuros e vestindo conjunto esportivo de blusa e calça na cor preta, sentada em um sofá preto em um fundo rosa.">
+-              <img class="w-100 img-fluid d-none d-md-block d-xl-none" src="./assets/Tablet/banner2-tablet.png"
+-                alt="Modelo feminina utilizando óculos escuros e vestindo conjunto esportivo de blusa e calça na cor preta, sentada em um sofá preto em um fundo rosa.">
+-              <img class="w-100 img-fluid d-none d-xl-block" src="./assets/Desktop/banner2-desktop.png"
+-                alt="Modelo feminina utilizando óculos escuros e vestindo conjunto esportivo de blusa e calça na cor preta, sentada em um sofá preto em um fundo rosa.">
+-              <div class="carousel-caption position-absolute posicao">
+-                <h5 class="fs-1">COLEÇÃO ATEMPORAL</h5>
+-                <p class="fs-4">Estilo e qualidade para durar.</p>
+-              </div>
+-            </div>
+-            <div class="carousel-item position-relative">
+-              <img class="w-100 img-fluid d-md-none" src="./assets/Mobile/banner3-mobile.png"
+-                alt="Modelo feminina utilizando óculos escuros e vestindo conjunto esportivo de blusa e calça na cor preta, sentada em um sofá preto em um fundo rosa.">
+-              <img class="w-100 img-fluid d-none d-md-block d-xl-none" src="./assets/Tablet/banner3-tablet.png"
+-                alt="Modelo feminina utilizando óculos escuros e vestindo conjunto esportivo de blusa e calça na cor preta, sentada em um sofá preto em um fundo rosa.">
+-              <img class="w-100 img-fluid d-none d-xl-block" src="./assets/Desktop/banner3-desktop.png"
+-                alt="Modelo feminina utilizando óculos escuros e vestindo conjunto esportivo de blusa e calça na cor preta, sentada em um sofá preto em um fundo rosa.">
+-              <div class="carousel-caption position-absolute posicao">
+-                <h5 class="fs-1">COLEÇÃO ATEMPORAL</h5>
+-                <p class="fs-4">Alto impacto visual, baixo impacto ambiental!</p>
+-              </div>
+-            </div>
+-          </div>
+-        
+-
+-
+-        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions"
+-            data-bs-slide="prev">
+-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+-            <span class="visually-hidden">Previous</span>
+-        </button>
+-        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions"
+-            data-bs-slide="next">
+-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+-            <span class="visually-hidden">Next</span>
+-        </button>
+-    </div>
+-
+-    <h2 class="text-center my-3 my-xl-5">Produtos que estão bombando!</h2>
+-
+-    <div class="container row mx-auto">
+-
+-        <div class="col-12 col-md-6 col-xl-4 pb-4">
+-            <div class="card">
+-                <svg class="bd-placeholder-img card-img-top" width="100%" height="180"
+-                    xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Image cap"
+-                    preserveAspectRatio="xMidYMid slice" focusable="false">
+-                    <title>Placeholder</title>
+-                    <rect width="100%" height="100%" fill="#868e96"></rect><text x="50%" y="50%" fill="#dee2e6"
+-                        dy=".3em">Image
+-                        cap</text>
+-                </svg>
+-                <div class="card-body">
+-                    <h5 class="card-title">Produto</h5>
+-                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
+-                        card's
+-                        content.</p>
+-                    <p>R$30,00</p>
+-                    <a href="#" class="btn btn-secondary rounded-0 border-0">Ver mais</a>
+-                </div>
+-            </div>
+-        </div>
+-
+-        <div class="col-12 col-md-6 col-xl-4 pb-4">
+-            <div class="card">
+-                <svg class="bd-placeholder-img card-img-top" width="100%" height="180"
+-                    xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Image cap"
+-                    preserveAspectRatio="xMidYMid slice" focusable="false">
+-                    <title>Placeholder</title>
+-                    <rect width="100%" height="100%" fill="#868e96"></rect><text x="50%" y="50%" fill="#dee2e6"
+-                        dy=".3em">Image
+-                        cap</text>
+-                </svg>
+-                <div class="card-body">
+-                    <h5 class="card-title">Produto</h5>
+-                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
+-                        card's
+-                        content.</p>
+-                    <p>R$30,00</p>
+-                    <a href="#" class="btn btn-secondary rounded-0 border-0">Ver mais</a>
+-                </div>
+-            </div>
+-        </div>
+-
+-        <div class="col-12 col-md-6 col-xl-4 pb-4">
+-            <div class="card">
+-                <svg class="bd-placeholder-img card-img-top" width="100%" height="180"
+-                    xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Image cap"
+-                    preserveAspectRatio="xMidYMid slice" focusable="false">
+-                    <title>Placeholder</title>
+-                    <rect width="100%" height="100%" fill="#868e96"></rect><text x="50%" y="50%" fill="#dee2e6"
+-                        dy=".3em">Image
+-                        cap</text>
+-                </svg>
+-                <div class="card-body">
+-                    <h5 class="card-title">Produto</h5>
+-                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
+-                        card's
+-                        content.</p>
+-                    <p>R$30,00</p>
+-                    <a href="#" class="btn btn-secondary rounded-0 border-0">Ver mais</a>
+-                </div>
+-            </div>
+-        </div>
+-
+-        <div class="col-12 col-md-6 col-xl-4 pb-4">
+-            <div class="card">
+-                <svg class="bd-placeholder-img card-img-top" width="100%" height="180"
+-                    xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Image cap"
+-                    preserveAspectRatio="xMidYMid slice" focusable="false">
+-                    <title>Placeholder</title>
+-                    <rect width="100%" height="100%" fill="#868e96"></rect><text x="50%" y="50%" fill="#dee2e6"
+-                        dy=".3em">Image
+-                        cap</text>
+-                </svg>
+-                <div class="card-body">
+-                    <h5 class="card-title">Produto</h5>
+-                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
+-                        card's
+-                        content.</p>
+-                    <p>R$30,00</p>
+-                    <a href="#" class="btn btn-secondary rounded-0 border-0">Ver mais</a>
+-                </div>
+-            </div>
+-        </div>
+-
+-        <div class="col-12 col-md-6 col-xl-4 pb-4">
+-            <div class="card">
+-                <svg class="bd-placeholder-img card-img-top" width="100%" height="180"
+-                    xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Image cap"
+-                    preserveAspectRatio="xMidYMid slice" focusable="false">
+-                    <title>Placeholder</title>
+-                    <rect width="100%" height="100%" fill="#868e96"></rect><text x="50%" y="50%" fill="#dee2e6"
+-                        dy=".3em">Image
+-                        cap</text>
+-                </svg>
+-                <div class="card-body">
+-                    <h5 class="card-title">Produto</h5>
+-                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
+-                        card's
+-                        content.</p>
+-                    <p>R$30,00</p>
+-                    <a href="#" class="btn btn-secondary rounded-0 border-0">Ver mais</a>
+-                </div>
+-            </div>
+-        </div>
+-
+-        <div class="col-12 col-md-6 col-xl-4 pb-4">
+-            <div class="card">
+-                <svg class="bd-placeholder-img card-img-top" width="100%" height="180"
+-                    xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Image cap"
+-                    preserveAspectRatio="xMidYMid slice" focusable="false">
+-                    <title>Placeholder</title>
+-                    <rect width="100%" height="100%" fill="#868e96"></rect><text x="50%" y="50%" fill="#dee2e6"
+-                        dy=".3em">Image
+-                        cap</text>
+-                </svg>
+-                <div class="card-body">
+-                    <h5 class="card-title">Produto</h5>
+-                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
+-                        card's
+-                        content.</p>
+-                    <p>R$30,00</p>
+-                    <a href="#" class="btn btn-secondary  rounded-0 border-0">Ver mais</a>
+-                </div>
+-            </div>
+-        </div>
+-
+-    </div>
+-
+-
+-
+-    <footer class="text-center bg-black text-bg-dark">
+-        <p class="card-text py-3">2024 <i class="bi bi-c-circle"></i> Projeto fictício sem fins comerciais.</p>
+-    </footer>
+-
+-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+-        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+-        crossorigin="anonymous"></script>
+-</body>
+-
+-</html>
+\ No newline at end of file
+Index: blogue/src/main/resources/templates/view/register.html
+===================================================================
+diff --git a/blogue/src/main/resources/templates/view/register.html b/blogue/src/main/resources/templates/view/register.html
+deleted file mode 100644
+--- a/blogue/src/main/resources/templates/view/register.html	(revision d32bdf70f60e38bb9edb186a3f4bda4c4b822c7a)
++++ /dev/null	(revision d32bdf70f60e38bb9edb186a3f4bda4c4b822c7a)
+@@ -1,103 +0,0 @@
+-<!DOCTYPE html>
+-
+-<html lang="en">
+-
+-<head>
+-    <meta charset="UTF-8">
+-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+-    <link rel="shortcut icon" href="./assets/favicon.png" type="image/x-icon">
+-    <title>Meteora</title>
+-
+-    <link rel="stylesheet" type="text/css" href="estilo.css">
+-
+-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+-
+-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+-          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+-</head>
+-
+-<body>
+-
+-<nav class="navbar navbar-expand-md bg-black navbar-dark">
+-    <div class="container-fluid">
+-        <a class="navbar-brand" href="#">
+-            <h1 class="m-0"><img class="d-block" src="./assets/logo-meteora.png" alt="Logo da loja Meteora"></h1>
+-        </a>
+-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+-                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+-                aria-label="Toggle navigation">
+-            <span class="navbar-toggler-icon"></span>
+-        </button>
+-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+-            <ul class="navbar-nav me-auto">
+-                <li class="nav-item">
+-                    <a class="nav-link active" aria-current="page" href="index.html">Home</a>
+-                </li>
+-                <li class="nav-item">
+-                    <a class="nav-link" href="login.html">Logar</a>
+-                </li>
+-
+-            </ul>
+-            <form class="d-flex" role="search">
+-                <input class="form-control me-2 rounded-0" type="search" placeholder="Digite o produto"
+-                       aria-label="Search">
+-                <button class="btn btn-outline-light rounded-0" type="submit">Buscar</button>
+-            </form>
+-        </div>
+-    </div>
+-</nav>
+-
+-
+-
+-<div class="container">
+-    <div class="col-sm-6" ng-model="pesquisaC" id="login-box">
+-        <div id="login-box-interno">
+-            <div id="login-box-label"><h1>Faça Seu Cadastro</h1></div>
+-            <form action="http://localhost:8080/pathRegisterController/save">
+-            <div class="form-group row">
+-                <label for="nome" class="col-sm-2 col-form-label">Nome</label>
+-                <div class="col-sm-10">
+-                    <input ng-model="cliente.nome" type="text" class="form-control" id="nome">
+-                </div>
+-            </div>
+-
+-
+-            <div class="form-group row">
+-                <label for="email" class="col-sm-2 col-form-label">E-mail</label>
+-                <div class="col-sm-10">
+-                    <input type="text" class="form-control" id="email">
+-                </div>
+-            </div>
+-
+-
+-            <div class="form-group row">
+-                <label for="senha" class="col-sm-2 col-form-label">Senha</label>
+-                <div class="col-sm-10">
+-                    <input type="password" class="form-control" id="senha">
+-                </div>
+-            </div>
+-
+-            <button class="btn btn-primary" ng-click="adicionarConta(cliente)" >Adicionar</button>
+-            </form>
+-            <br><br>
+-
+-            <button type="button" class="btn btn-default" onclick="document.location='login.html'">Já tem conta? Faça seu login</button>
+-
+-        </div>
+-    </div>
+-</div>
+-
+-
+-
+-
+-
+-
+-
+-
+-
+-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+-        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+-        crossorigin="anonymous"></script>
+-</body>
+-
+-</html>
+\ No newline at end of file
+Index: blogue/src/main/resources/templates/view/usuario.qute.html
+===================================================================
+diff --git a/blogue/src/main/resources/templates/view/usuario.qute.html b/blogue/src/main/resources/templates/view/usuario.qute.html
+deleted file mode 100644
+--- a/blogue/src/main/resources/templates/view/usuario.qute.html	(revision d32bdf70f60e38bb9edb186a3f4bda4c4b822c7a)
++++ /dev/null	(revision d32bdf70f60e38bb9edb186a3f4bda4c4b822c7a)
+@@ -1,16 +0,0 @@
+-<!doctype html>
+-<html lang="en">
+-<head>
+-    <meta charset="UTF-8">
+-    <meta name="viewport"
+-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+-    <title>Document</title>
+-
+-    <script>    </script>
+-
+-</head>
+-<body>
+-
+-</body>
+-</html>
+\ No newline at end of file
+Index: blogue/pom.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project xmlns=\"http://maven.apache.org/POM/4.0.0\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:schemaLocation=\"http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd\">\r\n    <modelVersion>4.0.0</modelVersion>\r\n    <groupId>io.github.julymira</groupId>\r\n    <artifactId>blogue</artifactId>\r\n    <version>1.0</version>\r\n\r\n    <properties>\r\n        <compiler-plugin.version>3.13.0</compiler-plugin.version>\r\n        <maven.compiler.release>17</maven.compiler.release>\r\n        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>\r\n        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>\r\n        <quarkus.platform.artifact-id>quarkus-bom</quarkus.platform.artifact-id>\r\n        <quarkus.platform.group-id>io.quarkus.platform</quarkus.platform.group-id>\r\n        <quarkus.platform.version>3.13.2</quarkus.platform.version>\r\n        <skipITs>true</skipITs>\r\n        <surefire-plugin.version>3.2.5</surefire-plugin.version>\r\n    </properties>\r\n\r\n    <dependencyManagement>\r\n        <dependencies>\r\n            <dependency>\r\n                <groupId>${quarkus.platform.group-id}</groupId>\r\n                <artifactId>${quarkus.platform.artifact-id}</artifactId>\r\n                <version>${quarkus.platform.version}</version>\r\n                <type>pom</type>\r\n                <scope>import</scope>\r\n            </dependency>\r\n        </dependencies>\r\n    </dependencyManagement>\r\n\r\n    <dependencies>\r\n        <dependency>\r\n            <groupId>io.quarkus</groupId>\r\n            <artifactId>quarkus-resteasy</artifactId>\r\n        </dependency>\r\n        <dependency>\r\n            <groupId>io.quarkus</groupId>\r\n            <artifactId>quarkus-arc</artifactId>\r\n        </dependency>\r\n        <dependency>\r\n            <groupId>io.quarkus</groupId>\r\n            <artifactId>quarkus-hibernate-validator</artifactId>\r\n        </dependency>\r\n        <dependency>\r\n            <groupId>io.quarkus</groupId>\r\n            <artifactId>quarkus-hibernate-orm-panache</artifactId>\r\n        </dependency>\r\n        <dependency>\r\n            <groupId>io.quarkus</groupId>\r\n            <artifactId>quarkus-hibernate-orm</artifactId>\r\n        </dependency>\r\n        <dependency>\r\n            <groupId>io.quarkus</groupId>\r\n            <artifactId>quarkus-jdbc-h2</artifactId>\r\n        </dependency>\r\n        <dependency>\r\n            <groupId>io.quarkus</groupId>\r\n            <artifactId>quarkus-resteasy-jsonb</artifactId>\r\n        </dependency>\r\n        <dependency>\r\n            <groupId>io.quarkus</groupId>\r\n            <artifactId>quarkus-jdbc-postgresql</artifactId>\r\n        </dependency>\r\n        <dependency>\r\n            <groupId>io.quarkus</groupId>\r\n            <artifactId>quarkus-junit5</artifactId>\r\n            <scope>test</scope>\r\n        </dependency>\r\n        <dependency>\r\n            <groupId>io.rest-assured</groupId>\r\n            <artifactId>rest-assured</artifactId>\r\n            <scope>test</scope>\r\n        </dependency>\r\n\r\n        <dependency>\r\n            <groupId>io.quarkus</groupId>\r\n            <artifactId>quarkus-smallrye-jwt-build</artifactId>\r\n        </dependency>\r\n        <dependency>\r\n            <groupId>org.mindrot</groupId>\r\n            <artifactId>jbcrypt</artifactId>\r\n            <version>0.4</version>\r\n        </dependency>\r\n    </dependencies>\r\n\r\n    <build>\r\n        <plugins>\r\n            <plugin>\r\n                <groupId>${quarkus.platform.group-id}</groupId>\r\n                <artifactId>quarkus-maven-plugin</artifactId>\r\n                <version>${quarkus.platform.version}</version>\r\n                <extensions>true</extensions>\r\n                <executions>\r\n                    <execution>\r\n                        <goals>\r\n                            <goal>build</goal>\r\n                            <goal>generate-code</goal>\r\n                            <goal>generate-code-tests</goal>\r\n                            <goal>native-image-agent</goal>\r\n                        </goals>\r\n                    </execution>\r\n                </executions>\r\n            </plugin>\r\n            <plugin>\r\n                <artifactId>maven-compiler-plugin</artifactId>\r\n                <version>${compiler-plugin.version}</version>\r\n                <configuration>\r\n                    <parameters>true</parameters>\r\n                </configuration>\r\n            </plugin>\r\n            <plugin>\r\n                <artifactId>maven-surefire-plugin</artifactId>\r\n                <version>${surefire-plugin.version}</version>\r\n                <configuration>\r\n                    <systemPropertyVariables>\r\n                        <java.util.logging.manager>org.jboss.logmanager.LogManager</java.util.logging.manager>\r\n                        <maven.home>${maven.home}</maven.home>\r\n                    </systemPropertyVariables>\r\n                </configuration>\r\n            </plugin>\r\n            <plugin>\r\n                <artifactId>maven-failsafe-plugin</artifactId>\r\n                <version>${surefire-plugin.version}</version>\r\n                <executions>\r\n                    <execution>\r\n                        <goals>\r\n                            <goal>integration-test</goal>\r\n                            <goal>verify</goal>\r\n                        </goals>\r\n                    </execution>\r\n                </executions>\r\n                <configuration>\r\n                    <systemPropertyVariables>\r\n                        <native.image.path>${project.build.directory}/${project.build.finalName}-runner</native.image.path>\r\n                        <java.util.logging.manager>org.jboss.logmanager.LogManager</java.util.logging.manager>\r\n                        <maven.home>${maven.home}</maven.home>\r\n                    </systemPropertyVariables>\r\n                </configuration>\r\n            </plugin>\r\n        </plugins>\r\n    </build>\r\n\r\n    <profiles>\r\n        <profile>\r\n            <id>native</id>\r\n            <activation>\r\n                <property>\r\n                    <name>native</name>\r\n                </property>\r\n            </activation>\r\n            <properties>\r\n                <skipITs>false</skipITs>\r\n                <quarkus.native.enabled>true</quarkus.native.enabled>\r\n            </properties>\r\n        </profile>\r\n    </profiles>\r\n</project>\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/blogue/pom.xml b/blogue/pom.xml
+--- a/blogue/pom.xml	(revision d32bdf70f60e38bb9edb186a3f4bda4c4b822c7a)
++++ b/blogue/pom.xml	(date 1725007883354)
+@@ -82,6 +82,21 @@
+             <artifactId>jbcrypt</artifactId>
+             <version>0.4</version>
+         </dependency>
++
++        <dependency>
++            <groupId>io.vertx</groupId>
++            <artifactId>vertx-auth-common</artifactId>
++            <version>4.5.9</version>
++        </dependency>
++        <dependency>
++            <groupId>io.smallrye</groupId>
++            <artifactId>smallrye-jwt-build</artifactId>
++            <version>4.5.3</version>
++        </dependency>
++        <dependency>
++            <groupId>io.quarkus</groupId>
++            <artifactId>quarkus-qute</artifactId>
++        </dependency>
+     </dependencies>
+ 
+     <build>
+Index: blogue/src/main/java/io/github/julymira/blogue/domain/controller/LoginResource.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package io.github.julymira.blogue.domain.controller;\r\n\r\nimport io.github.julymira.blogue.domain.model.bo.UserBO;\r\nimport io.github.julymira.blogue.domain.model.dto.UserLoginDTO;\r\nimport jakarta.inject.Inject;\r\nimport jakarta.transaction.Transactional;\r\nimport jakarta.ws.rs.*;\r\nimport jakarta.ws.rs.core.MediaType;\r\nimport jakarta.ws.rs.core.Response;\r\n\r\n@Path(\"/pathLoginController\")\r\n@Transactional\r\n@Consumes(MediaType.APPLICATION_FORM_URLENCODED)\r\npublic class LoginResource {\r\n\r\n    @Inject\r\n    UserBO userBO;\r\n\r\n    @Path(\"/Login\")\r\n    @POST\r\n    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)\r\n    public Response LoginUser(\r\n            @FormParam(\"email\") String email,\r\n            @FormParam(\"senha\") String senha) {\r\n\r\n        UserLoginDTO userLoginDTO = new UserLoginDTO(email, senha);\r\n        userBO.login(userLoginDTO);\r\n\r\n        return Response.ok(\"Usuário salvo com sucesso!\").build();\r\n    }\r\n\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/blogue/src/main/java/io/github/julymira/blogue/domain/controller/LoginResource.java b/blogue/src/main/java/io/github/julymira/blogue/domain/controller/LoginResource.java
+--- a/blogue/src/main/java/io/github/julymira/blogue/domain/controller/LoginResource.java	(revision d32bdf70f60e38bb9edb186a3f4bda4c4b822c7a)
++++ b/blogue/src/main/java/io/github/julymira/blogue/domain/controller/LoginResource.java	(date 1724931731792)
+@@ -1,32 +1,32 @@
+-package io.github.julymira.blogue.domain.controller;
+-
+-import io.github.julymira.blogue.domain.model.bo.UserBO;
+-import io.github.julymira.blogue.domain.model.dto.UserLoginDTO;
+-import jakarta.inject.Inject;
+-import jakarta.transaction.Transactional;
+-import jakarta.ws.rs.*;
+-import jakarta.ws.rs.core.MediaType;
+-import jakarta.ws.rs.core.Response;
+-
+-@Path("/pathLoginController")
+-@Transactional
+-@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+-public class LoginResource {
+-
+-    @Inject
+-    UserBO userBO;
+-
+-    @Path("/Login")
+-    @POST
+-    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+-    public Response LoginUser(
+-            @FormParam("email") String email,
+-            @FormParam("senha") String senha) {
+-
+-        UserLoginDTO userLoginDTO = new UserLoginDTO(email, senha);
+-        userBO.login(userLoginDTO);
+-
+-        return Response.ok("Usuário salvo com sucesso!").build();
+-    }
+-
+-}
++//package io.github.julymira.blogue.domain.controller;
++//
++//import io.github.julymira.blogue.domain.model.bo.UserBO;
++//import io.github.julymira.blogue.domain.model.dto.UserLoginDTO;
++//import jakarta.inject.Inject;
++//import jakarta.transaction.Transactional;
++//import jakarta.ws.rs.*;
++//import jakarta.ws.rs.core.MediaType;
++//import jakarta.ws.rs.core.Response;
++//
++//@Path("/pathLoginController")
++//@Transactional
++//@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
++//public class LoginResource {
++//
++//    @Inject
++//    UserBO userBO;
++//
++//    @Path("/Login")
++//    @POST
++//    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
++//    public Response LoginUser(
++//            @FormParam("email") String email,
++//            @FormParam("senha") String senha) {
++//
++//        UserLoginDTO userLoginDTO = new UserLoginDTO(email, senha);
++//        userBO.login(userLoginDTO);
++//
++//        return Response.ok("Usuário salvo com sucesso!").build();
++//    }
++//
++//}
+Index: blogue/src/main/java/io/github/julymira/blogue/domain/controller/RegisterResource.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package io.github.julymira.blogue.domain.controller;\r\n\r\nimport io.github.julymira.blogue.domain.model.bo.UserBO;\r\nimport io.github.julymira.blogue.domain.model.dto.UserRegisterDTO;\r\nimport jakarta.inject.Inject;\r\nimport jakarta.transaction.Transactional;\r\nimport jakarta.ws.rs.*;\r\nimport jakarta.ws.rs.core.MediaType;\r\nimport jakarta.ws.rs.core.Response;\r\n\r\n@Path(\"/pathRegisterController\")\r\n@Transactional\r\n@Consumes(MediaType.APPLICATION_FORM_URLENCODED)\r\npublic class RegisterResource {\r\n\r\n    @Inject\r\n    UserBO userBO;\r\n\r\n    @Path(\"/save\")\r\n    @POST\r\n    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)\r\n    public Response saveUser(\r\n            @FormParam(\"name\") String name,\r\n            @FormParam(\"email\") String email,\r\n            @FormParam(\"senha\") String senha) {\r\n\r\n        UserRegisterDTO userRegisterDTO = new UserRegisterDTO(name, email, senha);\r\n        userBO.saveUser(userRegisterDTO);\r\n\r\n        return Response.ok(\"Usuário salvo com sucesso!\").build();\r\n    }\r\n\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/blogue/src/main/java/io/github/julymira/blogue/domain/controller/RegisterResource.java b/blogue/src/main/java/io/github/julymira/blogue/domain/controller/RegisterResource.java
+--- a/blogue/src/main/java/io/github/julymira/blogue/domain/controller/RegisterResource.java	(revision d32bdf70f60e38bb9edb186a3f4bda4c4b822c7a)
++++ b/blogue/src/main/java/io/github/julymira/blogue/domain/controller/RegisterResource.java	(date 1724929844025)
+@@ -1,33 +1,33 @@
+-package io.github.julymira.blogue.domain.controller;
+-
+-import io.github.julymira.blogue.domain.model.bo.UserBO;
+-import io.github.julymira.blogue.domain.model.dto.UserRegisterDTO;
+-import jakarta.inject.Inject;
+-import jakarta.transaction.Transactional;
+-import jakarta.ws.rs.*;
+-import jakarta.ws.rs.core.MediaType;
+-import jakarta.ws.rs.core.Response;
+-
+-@Path("/pathRegisterController")
+-@Transactional
+-@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+-public class RegisterResource {
+-
+-    @Inject
+-    UserBO userBO;
+-
+-    @Path("/save")
+-    @POST
+-    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+-    public Response saveUser(
+-            @FormParam("name") String name,
+-            @FormParam("email") String email,
+-            @FormParam("senha") String senha) {
+-
+-        UserRegisterDTO userRegisterDTO = new UserRegisterDTO(name, email, senha);
+-        userBO.saveUser(userRegisterDTO);
+-
+-        return Response.ok("Usuário salvo com sucesso!").build();
+-    }
+-
+-}
++//package io.github.julymira.blogue.domain.controller;
++//
++//import io.github.julymira.blogue.domain.model.bo.UserBO;
++//import io.github.julymira.blogue.domain.model.dto.UserRegisterDTO;
++//import jakarta.inject.Inject;
++//import jakarta.transaction.Transactional;
++//import jakarta.ws.rs.*;
++//import jakarta.ws.rs.core.MediaType;
++//import jakarta.ws.rs.core.Response;
++//
++//@Path("/pathRegisterController")
++//@Transactional
++//@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
++//public class RegisterResource {
++//
++//    @Inject
++//    UserBO userBO;
++//
++//    @Path("/save")
++//    @POST
++//    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
++//    public Response saveUser(
++//            @FormParam("name") String name,
++//            @FormParam("email") String email,
++//            @FormParam("senha") String senha) {
++//
++//        UserRegisterDTO userRegisterDTO = new UserRegisterDTO(name, email, senha);
++//        userBO.saveUser(userRegisterDTO);
++//
++//        return Response.ok("Usuário salvo com sucesso!").build();
++//    }
++//
++//}
+Index: .idea/dbnavigator.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"DBNavigator.Project.DDLFileAttachmentManager\">\r\n    <mappings />\r\n    <preferences />\r\n  </component>\r\n  <component name=\"DBNavigator.Project.DataEditorManager\">\r\n    <record-view-column-sorting-type value=\"BY_INDEX\" />\r\n    <value-preview-text-wrapping value=\"false\" />\r\n    <value-preview-pinned value=\"false\" />\r\n  </component>\r\n  <component name=\"DBNavigator.Project.DatabaseConsoleManager\">\r\n    <connection id=\"04b8864c-a703-4e95-97c9-17a6706deab7\">\r\n      <console name=\"Connection\" type=\"STANDARD\" schema=\"\" session=\"Main\" />\r\n    </connection>\r\n  </component>\r\n  <component name=\"DBNavigator.Project.DatabaseEditorStateManager\">\r\n    <last-used-providers />\r\n  </component>\r\n  <component name=\"DBNavigator.Project.DatabaseFileManager\">\r\n    <open-files />\r\n  </component>\r\n  <component name=\"DBNavigator.Project.DatabaseSessionManager\">\r\n    <connection id=\"04b8864c-a703-4e95-97c9-17a6706deab7\" />\r\n  </component>\r\n  <component name=\"DBNavigator.Project.ExecutionManager\">\r\n    <retain-sticky-names value=\"false\" />\r\n  </component>\r\n  <component name=\"DBNavigator.Project.FileConnectionMappingManager\">\r\n    <mapping file-url=\"file://$PROJECT_DIR$/blogue/db/db.sql\" connection-id=\"04b8864c-a703-4e95-97c9-17a6706deab7\" session-id=\"MAIN\" current-schema=\"postgres\" />\r\n  </component>\r\n  <component name=\"DBNavigator.Project.ObjectQuickFilterManager\">\r\n    <last-used-operator value=\"EQUAL\" />\r\n    <filters />\r\n  </component>\r\n  <component name=\"DBNavigator.Project.ScriptExecutionManager\" clear-outputs=\"true\">\r\n    <recently-used-interfaces />\r\n  </component>\r\n  <component name=\"DBNavigator.Project.Settings\">\r\n    <connections>\r\n      <connection id=\"04b8864c-a703-4e95-97c9-17a6706deab7\" active=\"true\" signed=\"true\">\r\n        <database>\r\n          <name value=\"Connection\" />\r\n          <description value=\"\" />\r\n          <database-type value=\"POSTGRES\" />\r\n          <config-type value=\"BASIC\" />\r\n          <database-version value=\"15.3\" />\r\n          <driver-source value=\"BUNDLED\" />\r\n          <driver-library value=\"\" />\r\n          <driver value=\"\" />\r\n          <url-type value=\"DATABASE\" />\r\n          <host value=\"localhost\" />\r\n          <port value=\"3306\" />\r\n          <database value=\"postgres\" />\r\n          <tns-folder value=\"\" />\r\n          <tns-profile value=\"\" />\r\n          <type value=\"USER_PASSWORD\" />\r\n          <user value=\"postgres\" />\r\n          <deprecated-pwd value=\"RGVudGUxMjM0\" />\r\n        </database>\r\n        <properties>\r\n          <auto-commit value=\"false\" />\r\n        </properties>\r\n        <ssh-settings>\r\n          <active value=\"false\" />\r\n          <proxy-host value=\"\" />\r\n          <proxy-port value=\"22\" />\r\n          <proxy-user value=\"\" />\r\n          <deprecated-proxy-pwd value=\"\" />\r\n          <auth-type value=\"PASSWORD\" />\r\n          <key-file value=\"\" />\r\n          <key-passphrase value=\"\" />\r\n        </ssh-settings>\r\n        <ssl-settings>\r\n          <active value=\"false\" />\r\n          <certificate-authority-file value=\"\" />\r\n          <client-certificate-file value=\"\" />\r\n          <client-key-file value=\"\" />\r\n        </ssl-settings>\r\n        <details>\r\n          <charset value=\"UTF-8\" />\r\n          <session-management value=\"true\" />\r\n          <ddl-file-binding value=\"true\" />\r\n          <database-logging value=\"true\" />\r\n          <connect-automatically value=\"true\" />\r\n          <restore-workspace value=\"true\" />\r\n          <restore-workspace-deep value=\"false\" />\r\n          <environment-type value=\"default\" />\r\n          <connectivity-timeout value=\"30\" />\r\n          <idle-time-to-disconnect value=\"30\" />\r\n          <idle-time-to-disconnect-pool value=\"5\" />\r\n          <credential-expiry-time value=\"10\" />\r\n          <max-connection-pool-size value=\"7\" />\r\n          <alternative-statement-delimiter value=\"\" />\r\n        </details>\r\n        <debugger>\r\n          <compile-dependencies value=\"true\" />\r\n          <tcp-driver-tunneling value=\"false\" />\r\n          <tcp-host-address value=\"\" />\r\n          <tcp-port-from value=\"4000\" />\r\n          <tcp-port-to value=\"4999\" />\r\n          <debugger-type value=\"ASK\" />\r\n        </debugger>\r\n        <object-filters hide-empty-schemas=\"false\" hide-pseudo-columns=\"false\" hide-audit-columns=\"false\">\r\n          <object-filters />\r\n          <object-type-filter use-master-settings=\"true\">\r\n            <object-type name=\"SCHEMA\" enabled=\"true\" />\r\n            <object-type name=\"USER\" enabled=\"true\" />\r\n            <object-type name=\"ROLE\" enabled=\"true\" />\r\n            <object-type name=\"PRIVILEGE\" enabled=\"true\" />\r\n            <object-type name=\"CHARSET\" enabled=\"true\" />\r\n            <object-type name=\"TABLE\" enabled=\"true\" />\r\n            <object-type name=\"VIEW\" enabled=\"true\" />\r\n            <object-type name=\"MATERIALIZED_VIEW\" enabled=\"true\" />\r\n            <object-type name=\"NESTED_TABLE\" enabled=\"true\" />\r\n            <object-type name=\"COLUMN\" enabled=\"true\" />\r\n            <object-type name=\"INDEX\" enabled=\"true\" />\r\n            <object-type name=\"CONSTRAINT\" enabled=\"true\" />\r\n            <object-type name=\"DATASET_TRIGGER\" enabled=\"true\" />\r\n            <object-type name=\"DATABASE_TRIGGER\" enabled=\"true\" />\r\n            <object-type name=\"SYNONYM\" enabled=\"true\" />\r\n            <object-type name=\"SEQUENCE\" enabled=\"true\" />\r\n            <object-type name=\"PROCEDURE\" enabled=\"true\" />\r\n            <object-type name=\"FUNCTION\" enabled=\"true\" />\r\n            <object-type name=\"PACKAGE\" enabled=\"true\" />\r\n            <object-type name=\"TYPE\" enabled=\"true\" />\r\n            <object-type name=\"TYPE_ATTRIBUTE\" enabled=\"true\" />\r\n            <object-type name=\"ARGUMENT\" enabled=\"true\" />\r\n            <object-type name=\"DIMENSION\" enabled=\"true\" />\r\n            <object-type name=\"CLUSTER\" enabled=\"true\" />\r\n            <object-type name=\"DBLINK\" enabled=\"true\" />\r\n          </object-type-filter>\r\n        </object-filters>\r\n      </connection>\r\n    </connections>\r\n    <browser-settings>\r\n      <general>\r\n        <display-mode value=\"TABBED\" />\r\n        <navigation-history-size value=\"100\" />\r\n        <show-object-details value=\"false\" />\r\n        <enable-sticky-paths value=\"true\" />\r\n      </general>\r\n      <filters>\r\n        <object-type-filter>\r\n          <object-type name=\"SCHEMA\" enabled=\"true\" />\r\n          <object-type name=\"USER\" enabled=\"true\" />\r\n          <object-type name=\"ROLE\" enabled=\"true\" />\r\n          <object-type name=\"PRIVILEGE\" enabled=\"true\" />\r\n          <object-type name=\"CHARSET\" enabled=\"true\" />\r\n          <object-type name=\"TABLE\" enabled=\"true\" />\r\n          <object-type name=\"VIEW\" enabled=\"true\" />\r\n          <object-type name=\"MATERIALIZED_VIEW\" enabled=\"true\" />\r\n          <object-type name=\"NESTED_TABLE\" enabled=\"true\" />\r\n          <object-type name=\"COLUMN\" enabled=\"true\" />\r\n          <object-type name=\"INDEX\" enabled=\"true\" />\r\n          <object-type name=\"CONSTRAINT\" enabled=\"true\" />\r\n          <object-type name=\"DATASET_TRIGGER\" enabled=\"true\" />\r\n          <object-type name=\"DATABASE_TRIGGER\" enabled=\"true\" />\r\n          <object-type name=\"SYNONYM\" enabled=\"true\" />\r\n          <object-type name=\"SEQUENCE\" enabled=\"true\" />\r\n          <object-type name=\"PROCEDURE\" enabled=\"true\" />\r\n          <object-type name=\"FUNCTION\" enabled=\"true\" />\r\n          <object-type name=\"PACKAGE\" enabled=\"true\" />\r\n          <object-type name=\"TYPE\" enabled=\"true\" />\r\n          <object-type name=\"TYPE_ATTRIBUTE\" enabled=\"true\" />\r\n          <object-type name=\"ARGUMENT\" enabled=\"true\" />\r\n          <object-type name=\"DIMENSION\" enabled=\"true\" />\r\n          <object-type name=\"CLUSTER\" enabled=\"true\" />\r\n          <object-type name=\"DBLINK\" enabled=\"true\" />\r\n        </object-type-filter>\r\n      </filters>\r\n      <sorting>\r\n        <object-type name=\"COLUMN\" sorting-type=\"NAME\" />\r\n        <object-type name=\"FUNCTION\" sorting-type=\"NAME\" />\r\n        <object-type name=\"PROCEDURE\" sorting-type=\"NAME\" />\r\n        <object-type name=\"ARGUMENT\" sorting-type=\"POSITION\" />\r\n        <object-type name=\"TYPE ATTRIBUTE\" sorting-type=\"POSITION\" />\r\n      </sorting>\r\n      <default-editors>\r\n        <object-type name=\"VIEW\" editor-type=\"SELECTION\" />\r\n        <object-type name=\"PACKAGE\" editor-type=\"SELECTION\" />\r\n        <object-type name=\"TYPE\" editor-type=\"SELECTION\" />\r\n      </default-editors>\r\n    </browser-settings>\r\n    <navigation-settings>\r\n      <lookup-filters>\r\n        <lookup-objects>\r\n          <object-type name=\"SCHEMA\" enabled=\"true\" />\r\n          <object-type name=\"USER\" enabled=\"false\" />\r\n          <object-type name=\"ROLE\" enabled=\"false\" />\r\n          <object-type name=\"PRIVILEGE\" enabled=\"false\" />\r\n          <object-type name=\"CHARSET\" enabled=\"false\" />\r\n          <object-type name=\"TABLE\" enabled=\"true\" />\r\n          <object-type name=\"VIEW\" enabled=\"true\" />\r\n          <object-type name=\"MATERIALIZED VIEW\" enabled=\"true\" />\r\n          <object-type name=\"INDEX\" enabled=\"true\" />\r\n          <object-type name=\"CONSTRAINT\" enabled=\"true\" />\r\n          <object-type name=\"DATASET TRIGGER\" enabled=\"true\" />\r\n          <object-type name=\"DATABASE TRIGGER\" enabled=\"true\" />\r\n          <object-type name=\"SYNONYM\" enabled=\"false\" />\r\n          <object-type name=\"SEQUENCE\" enabled=\"true\" />\r\n          <object-type name=\"PROCEDURE\" enabled=\"true\" />\r\n          <object-type name=\"FUNCTION\" enabled=\"true\" />\r\n          <object-type name=\"PACKAGE\" enabled=\"true\" />\r\n          <object-type name=\"TYPE\" enabled=\"true\" />\r\n          <object-type name=\"DIMENSION\" enabled=\"false\" />\r\n          <object-type name=\"CLUSTER\" enabled=\"false\" />\r\n          <object-type name=\"DBLINK\" enabled=\"true\" />\r\n        </lookup-objects>\r\n        <force-database-load value=\"false\" />\r\n        <prompt-connection-selection value=\"true\" />\r\n        <prompt-schema-selection value=\"true\" />\r\n      </lookup-filters>\r\n    </navigation-settings>\r\n    <dataset-grid-settings>\r\n      <general>\r\n        <enable-zooming value=\"true\" />\r\n        <enable-column-tooltip value=\"true\" />\r\n      </general>\r\n      <sorting>\r\n        <nulls-first value=\"true\" />\r\n        <max-sorting-columns value=\"4\" />\r\n      </sorting>\r\n      <audit-columns>\r\n        <column-names value=\"\" />\r\n        <visible value=\"true\" />\r\n        <editable value=\"false\" />\r\n      </audit-columns>\r\n    </dataset-grid-settings>\r\n    <dataset-editor-settings>\r\n      <text-editor-popup>\r\n        <active value=\"false\" />\r\n        <active-if-empty value=\"false\" />\r\n        <data-length-threshold value=\"100\" />\r\n        <popup-delay value=\"1000\" />\r\n      </text-editor-popup>\r\n      <values-actions-popup>\r\n        <show-popup-button value=\"true\" />\r\n        <element-count-threshold value=\"1000\" />\r\n        <data-length-threshold value=\"250\" />\r\n      </values-actions-popup>\r\n      <general>\r\n        <fetch-block-size value=\"100\" />\r\n        <fetch-timeout value=\"30\" />\r\n        <trim-whitespaces value=\"true\" />\r\n        <convert-empty-strings-to-null value=\"true\" />\r\n        <select-content-on-cell-edit value=\"true\" />\r\n        <large-value-preview-active value=\"true\" />\r\n      </general>\r\n      <filters>\r\n        <prompt-filter-dialog value=\"true\" />\r\n        <default-filter-type value=\"BASIC\" />\r\n      </filters>\r\n      <qualified-text-editor text-length-threshold=\"300\">\r\n        <content-types>\r\n          <content-type name=\"Text\" enabled=\"true\" />\r\n          <content-type name=\"Properties\" enabled=\"true\" />\r\n          <content-type name=\"XML\" enabled=\"true\" />\r\n          <content-type name=\"DTD\" enabled=\"true\" />\r\n          <content-type name=\"HTML\" enabled=\"true\" />\r\n          <content-type name=\"XHTML\" enabled=\"true\" />\r\n          <content-type name=\"CSS\" enabled=\"true\" />\r\n          <content-type name=\"Java\" enabled=\"true\" />\r\n          <content-type name=\"SQL\" enabled=\"true\" />\r\n          <content-type name=\"PL/SQL\" enabled=\"true\" />\r\n          <content-type name=\"JavaScript\" enabled=\"true\" />\r\n          <content-type name=\"JSON\" enabled=\"true\" />\r\n          <content-type name=\"JSON5\" enabled=\"true\" />\r\n          <content-type name=\"JSP\" enabled=\"true\" />\r\n          <content-type name=\"JSPx\" enabled=\"true\" />\r\n          <content-type name=\"Groovy\" enabled=\"true\" />\r\n          <content-type name=\"FTL\" enabled=\"true\" />\r\n          <content-type name=\"VTL\" enabled=\"true\" />\r\n          <content-type name=\"YAML\" enabled=\"true\" />\r\n          <content-type name=\"Manifest\" enabled=\"true\" />\r\n        </content-types>\r\n      </qualified-text-editor>\r\n      <record-navigation>\r\n        <navigation-target value=\"VIEWER\" />\r\n      </record-navigation>\r\n    </dataset-editor-settings>\r\n    <code-editor-settings>\r\n      <general>\r\n        <show-object-navigation-gutter value=\"false\" />\r\n        <show-spec-declaration-navigation-gutter value=\"true\" />\r\n        <enable-spellchecking value=\"true\" />\r\n        <enable-reference-spellchecking value=\"false\" />\r\n      </general>\r\n      <confirmations>\r\n        <save-changes value=\"false\" />\r\n        <revert-changes value=\"true\" />\r\n        <exit-on-changes value=\"ASK\" />\r\n      </confirmations>\r\n    </code-editor-settings>\r\n    <code-completion-settings>\r\n      <filters>\r\n        <basic-filter>\r\n          <filter-element type=\"RESERVED_WORD\" id=\"keyword\" selected=\"true\" />\r\n          <filter-element type=\"RESERVED_WORD\" id=\"function\" selected=\"true\" />\r\n          <filter-element type=\"RESERVED_WORD\" id=\"parameter\" selected=\"true\" />\r\n          <filter-element type=\"RESERVED_WORD\" id=\"datatype\" selected=\"true\" />\r\n          <filter-element type=\"RESERVED_WORD\" id=\"exception\" selected=\"true\" />\r\n          <filter-element type=\"OBJECT\" id=\"schema\" selected=\"true\" />\r\n          <filter-element type=\"OBJECT\" id=\"role\" selected=\"true\" />\r\n          <filter-element type=\"OBJECT\" id=\"user\" selected=\"true\" />\r\n          <filter-element type=\"OBJECT\" id=\"privilege\" selected=\"true\" />\r\n          <user-schema>\r\n            <filter-element type=\"OBJECT\" id=\"table\" selected=\"true\" />\r\n            <filter-element type=\"OBJECT\" id=\"view\" selected=\"true\" />\r\n            <filter-element type=\"OBJECT\" id=\"materialized view\" selected=\"true\" />\r\n            <filter-element type=\"OBJECT\" id=\"index\" selected=\"true\" />\r\n            <filter-element type=\"OBJECT\" id=\"constraint\" selected=\"true\" />\r\n            <filter-element type=\"OBJECT\" id=\"trigger\" selected=\"true\" />\r\n            <filter-element type=\"OBJECT\" id=\"synonym\" selected=\"false\" />\r\n            <filter-element type=\"OBJECT\" id=\"sequence\" selected=\"true\" />\r\n            <filter-element type=\"OBJECT\" id=\"procedure\" selected=\"true\" />\r\n            <filter-element type=\"OBJECT\" id=\"function\" selected=\"true\" />\r\n            <filter-element type=\"OBJECT\" id=\"package\" selected=\"true\" />\r\n            <filter-element type=\"OBJECT\" id=\"type\" selected=\"true\" />\r\n            <filter-element type=\"OBJECT\" id=\"dimension\" selected=\"true\" />\r\n            <filter-element type=\"OBJECT\" id=\"cluster\" selected=\"true\" />\r\n            <filter-element type=\"OBJECT\" id=\"dblink\" selected=\"true\" />\r\n          </user-schema>\r\n          <public-schema>\r\n            <filter-element type=\"OBJECT\" id=\"table\" selected=\"false\" />\r\n            <filter-element type=\"OBJECT\" id=\"view\" selected=\"false\" />\r\n            <filter-element type=\"OBJECT\" id=\"materialized view\" selected=\"false\" />\r\n            <filter-element type=\"OBJECT\" id=\"index\" selected=\"false\" />\r\n            <filter-element type=\"OBJECT\" id=\"constraint\" selected=\"false\" />\r\n            <filter-element type=\"OBJECT\" id=\"trigger\" selected=\"false\" />\r\n            <filter-element type=\"OBJECT\" id=\"synonym\" selected=\"false\" />\r\n            <filter-element type=\"OBJECT\" id=\"sequence\" selected=\"false\" />\r\n            <filter-element type=\"OBJECT\" id=\"procedure\" selected=\"false\" />\r\n            <filter-element type=\"OBJECT\" id=\"function\" selected=\"false\" />\r\n            <filter-element type=\"OBJECT\" id=\"package\" selected=\"false\" />\r\n            <filter-element type=\"OBJECT\" id=\"type\" selected=\"false\" />\r\n            <filter-element type=\"OBJECT\" id=\"dimension\" selected=\"false\" />\r\n            <filter-element type=\"OBJECT\" id=\"cluster\" selected=\"false\" />\r\n            <filter-element type=\"OBJECT\" id=\"dblink\" selected=\"false\" />\r\n          </public-schema>\r\n          <any-schema>\r\n            <filter-element type=\"OBJECT\" id=\"table\" selected=\"true\" />\r\n            <filter-element type=\"OBJECT\" id=\"view\" selected=\"true\" />\r\n            <filter-element type=\"OBJECT\" id=\"materialized view\" selected=\"true\" />\r\n            <filter-element type=\"OBJECT\" id=\"index\" selected=\"true\" />\r\n            <filter-element type=\"OBJECT\" id=\"constraint\" selected=\"true\" />\r\n            <filter-element type=\"OBJECT\" id=\"trigger\" selected=\"true\" />\r\n            <filter-element type=\"OBJECT\" id=\"synonym\" selected=\"true\" />\r\n            <filter-element type=\"OBJECT\" id=\"sequence\" selected=\"true\" />\r\n            <filter-element type=\"OBJECT\" id=\"procedure\" selected=\"true\" />\r\n            <filter-element type=\"OBJECT\" id=\"function\" selected=\"true\" />\r\n            <filter-element type=\"OBJECT\" id=\"package\" selected=\"true\" />\r\n            <filter-element type=\"OBJECT\" id=\"type\" selected=\"true\" />\r\n            <filter-element type=\"OBJECT\" id=\"dimension\" selected=\"true\" />\r\n            <filter-element type=\"OBJECT\" id=\"cluster\" selected=\"true\" />\r\n            <filter-element type=\"OBJECT\" id=\"dblink\" selected=\"true\" />\r\n          </any-schema>\r\n        </basic-filter>\r\n        <extended-filter>\r\n          <filter-element type=\"RESERVED_WORD\" id=\"keyword\" selected=\"true\" />\r\n          <filter-element type=\"RESERVED_WORD\" id=\"function\" selected=\"true\" />\r\n          <filter-element type=\"RESERVED_WORD\" id=\"parameter\" selected=\"true\" />\r\n          <filter-element type=\"RESERVED_WORD\" id=\"datatype\" selected=\"true\" />\r\n          <filter-element type=\"RESERVED_WORD\" id=\"exception\" selected=\"true\" />\r\n          <filter-element type=\"OBJECT\" id=\"schema\" selected=\"true\" />\r\n          <filter-element type=\"OBJECT\" id=\"user\" selected=\"true\" />\r\n          <filter-element type=\"OBJECT\" id=\"role\" selected=\"true\" />\r\n          <filter-element type=\"OBJECT\" id=\"privilege\" selected=\"true\" />\r\n          <user-schema>\r\n            <filter-element type=\"OBJECT\" id=\"table\" selected=\"true\" />\r\n            <filter-element type=\"OBJECT\" id=\"view\" selected=\"true\" />\r\n            <filter-element type=\"OBJECT\" id=\"materialized view\" selected=\"true\" />\r\n            <filter-element type=\"OBJECT\" id=\"index\" selected=\"true\" />\r\n            <filter-element type=\"OBJECT\" id=\"constraint\" selected=\"true\" />\r\n            <filter-element type=\"OBJECT\" id=\"trigger\" selected=\"true\" />\r\n            <filter-element type=\"OBJECT\" id=\"synonym\" selected=\"true\" />\r\n            <filter-element type=\"OBJECT\" id=\"sequence\" selected=\"true\" />\r\n            <filter-element type=\"OBJECT\" id=\"procedure\" selected=\"true\" />\r\n            <filter-element type=\"OBJECT\" id=\"function\" selected=\"true\" />\r\n            <filter-element type=\"OBJECT\" id=\"package\" selected=\"true\" />\r\n            <filter-element type=\"OBJECT\" id=\"type\" selected=\"true\" />\r\n            <filter-element type=\"OBJECT\" id=\"dimension\" selected=\"true\" />\r\n            <filter-element type=\"OBJECT\" id=\"cluster\" selected=\"true\" />\r\n            <filter-element type=\"OBJECT\" id=\"dblink\" selected=\"true\" />\r\n          </user-schema>\r\n          <public-schema>\r\n            <filter-element type=\"OBJECT\" id=\"table\" selected=\"true\" />\r\n            <filter-element type=\"OBJECT\" id=\"view\" selected=\"true\" />\r\n            <filter-element type=\"OBJECT\" id=\"materialized view\" selected=\"true\" />\r\n            <filter-element type=\"OBJECT\" id=\"index\" selected=\"true\" />\r\n            <filter-element type=\"OBJECT\" id=\"constraint\" selected=\"true\" />\r\n            <filter-element type=\"OBJECT\" id=\"trigger\" selected=\"true\" />\r\n            <filter-element type=\"OBJECT\" id=\"synonym\" selected=\"true\" />\r\n            <filter-element type=\"OBJECT\" id=\"sequence\" selected=\"true\" />\r\n            <filter-element type=\"OBJECT\" id=\"procedure\" selected=\"true\" />\r\n            <filter-element type=\"OBJECT\" id=\"function\" selected=\"true\" />\r\n            <filter-element type=\"OBJECT\" id=\"package\" selected=\"true\" />\r\n            <filter-element type=\"OBJECT\" id=\"type\" selected=\"true\" />\r\n            <filter-element type=\"OBJECT\" id=\"dimension\" selected=\"true\" />\r\n            <filter-element type=\"OBJECT\" id=\"cluster\" selected=\"true\" />\r\n            <filter-element type=\"OBJECT\" id=\"dblink\" selected=\"true\" />\r\n          </public-schema>\r\n          <any-schema>\r\n            <filter-element type=\"OBJECT\" id=\"table\" selected=\"true\" />\r\n            <filter-element type=\"OBJECT\" id=\"view\" selected=\"true\" />\r\n            <filter-element type=\"OBJECT\" id=\"materialized view\" selected=\"true\" />\r\n            <filter-element type=\"OBJECT\" id=\"index\" selected=\"true\" />\r\n            <filter-element type=\"OBJECT\" id=\"constraint\" selected=\"true\" />\r\n            <filter-element type=\"OBJECT\" id=\"trigger\" selected=\"true\" />\r\n            <filter-element type=\"OBJECT\" id=\"synonym\" selected=\"true\" />\r\n            <filter-element type=\"OBJECT\" id=\"sequence\" selected=\"true\" />\r\n            <filter-element type=\"OBJECT\" id=\"procedure\" selected=\"true\" />\r\n            <filter-element type=\"OBJECT\" id=\"function\" selected=\"true\" />\r\n            <filter-element type=\"OBJECT\" id=\"package\" selected=\"true\" />\r\n            <filter-element type=\"OBJECT\" id=\"type\" selected=\"true\" />\r\n            <filter-element type=\"OBJECT\" id=\"dimension\" selected=\"true\" />\r\n            <filter-element type=\"OBJECT\" id=\"cluster\" selected=\"true\" />\r\n            <filter-element type=\"OBJECT\" id=\"dblink\" selected=\"true\" />\r\n          </any-schema>\r\n        </extended-filter>\r\n      </filters>\r\n      <sorting enabled=\"true\">\r\n        <sorting-element type=\"RESERVED_WORD\" id=\"keyword\" />\r\n        <sorting-element type=\"RESERVED_WORD\" id=\"datatype\" />\r\n        <sorting-element type=\"OBJECT\" id=\"column\" />\r\n        <sorting-element type=\"OBJECT\" id=\"table\" />\r\n        <sorting-element type=\"OBJECT\" id=\"view\" />\r\n        <sorting-element type=\"OBJECT\" id=\"materialized view\" />\r\n        <sorting-element type=\"OBJECT\" id=\"index\" />\r\n        <sorting-element type=\"OBJECT\" id=\"constraint\" />\r\n        <sorting-element type=\"OBJECT\" id=\"trigger\" />\r\n        <sorting-element type=\"OBJECT\" id=\"synonym\" />\r\n        <sorting-element type=\"OBJECT\" id=\"sequence\" />\r\n        <sorting-element type=\"OBJECT\" id=\"procedure\" />\r\n        <sorting-element type=\"OBJECT\" id=\"function\" />\r\n        <sorting-element type=\"OBJECT\" id=\"package\" />\r\n        <sorting-element type=\"OBJECT\" id=\"type\" />\r\n        <sorting-element type=\"OBJECT\" id=\"dimension\" />\r\n        <sorting-element type=\"OBJECT\" id=\"cluster\" />\r\n        <sorting-element type=\"OBJECT\" id=\"dblink\" />\r\n        <sorting-element type=\"OBJECT\" id=\"schema\" />\r\n        <sorting-element type=\"OBJECT\" id=\"role\" />\r\n        <sorting-element type=\"OBJECT\" id=\"user\" />\r\n        <sorting-element type=\"RESERVED_WORD\" id=\"function\" />\r\n        <sorting-element type=\"RESERVED_WORD\" id=\"parameter\" />\r\n      </sorting>\r\n      <format>\r\n        <enforce-code-style-case value=\"true\" />\r\n      </format>\r\n    </code-completion-settings>\r\n    <execution-engine-settings>\r\n      <statement-execution>\r\n        <fetch-block-size value=\"100\" />\r\n        <execution-timeout value=\"20\" />\r\n        <debug-execution-timeout value=\"600\" />\r\n        <focus-result value=\"false\" />\r\n        <prompt-execution value=\"false\" />\r\n      </statement-execution>\r\n      <script-execution>\r\n        <command-line-interfaces />\r\n        <execution-timeout value=\"300\" />\r\n      </script-execution>\r\n      <method-execution>\r\n        <execution-timeout value=\"30\" />\r\n        <debug-execution-timeout value=\"600\" />\r\n        <parameter-history-size value=\"10\" />\r\n      </method-execution>\r\n    </execution-engine-settings>\r\n    <operation-settings>\r\n      <transactions>\r\n        <uncommitted-changes>\r\n          <on-project-close value=\"ASK\" />\r\n          <on-disconnect value=\"ASK\" />\r\n          <on-autocommit-toggle value=\"ASK\" />\r\n        </uncommitted-changes>\r\n        <multiple-uncommitted-changes>\r\n          <on-commit value=\"ASK\" />\r\n          <on-rollback value=\"ASK\" />\r\n        </multiple-uncommitted-changes>\r\n      </transactions>\r\n      <session-browser>\r\n        <disconnect-session value=\"ASK\" />\r\n        <kill-session value=\"ASK\" />\r\n        <reload-on-filter-change value=\"false\" />\r\n      </session-browser>\r\n      <compiler>\r\n        <compile-type value=\"KEEP\" />\r\n        <compile-dependencies value=\"ASK\" />\r\n        <always-show-controls value=\"false\" />\r\n      </compiler>\r\n    </operation-settings>\r\n    <ddl-file-settings>\r\n      <extensions>\r\n        <mapping file-type-id=\"VIEW\" extensions=\"vw\" />\r\n        <mapping file-type-id=\"TRIGGER\" extensions=\"trg\" />\r\n        <mapping file-type-id=\"PROCEDURE\" extensions=\"prc\" />\r\n        <mapping file-type-id=\"FUNCTION\" extensions=\"fnc\" />\r\n        <mapping file-type-id=\"PACKAGE\" extensions=\"pkg\" />\r\n        <mapping file-type-id=\"PACKAGE_SPEC\" extensions=\"pks\" />\r\n        <mapping file-type-id=\"PACKAGE_BODY\" extensions=\"pkb\" />\r\n        <mapping file-type-id=\"TYPE\" extensions=\"tpe\" />\r\n        <mapping file-type-id=\"TYPE_SPEC\" extensions=\"tps\" />\r\n        <mapping file-type-id=\"TYPE_BODY\" extensions=\"tpb\" />\r\n      </extensions>\r\n      <general>\r\n        <lookup-ddl-files value=\"true\" />\r\n        <create-ddl-files value=\"false\" />\r\n        <synchronize-ddl-files value=\"true\" />\r\n        <use-qualified-names value=\"false\" />\r\n        <make-scripts-rerunnable value=\"true\" />\r\n      </general>\r\n    </ddl-file-settings>\r\n    <general-settings>\r\n      <regional-settings>\r\n        <date-format value=\"MEDIUM\" />\r\n        <number-format value=\"UNGROUPED\" />\r\n        <locale value=\"SYSTEM_DEFAULT\" />\r\n        <use-custom-formats value=\"false\" />\r\n      </regional-settings>\r\n      <environment>\r\n        <environment-types>\r\n          <environment-type id=\"development\" name=\"Development\" description=\"Development environment\" color=\"-2430209/-12296320\" readonly-code=\"false\" readonly-data=\"false\" />\r\n          <environment-type id=\"integration\" name=\"Integration\" description=\"Integration environment\" color=\"-2621494/-12163514\" readonly-code=\"true\" readonly-data=\"false\" />\r\n          <environment-type id=\"production\" name=\"Production\" description=\"Productive environment\" color=\"-11574/-10271420\" readonly-code=\"true\" readonly-data=\"true\" />\r\n          <environment-type id=\"other\" name=\"Other\" description=\"\" color=\"-1576/-10724543\" readonly-code=\"false\" readonly-data=\"false\" />\r\n        </environment-types>\r\n        <visibility-settings>\r\n          <connection-tabs value=\"true\" />\r\n          <dialog-headers value=\"true\" />\r\n          <object-editor-tabs value=\"true\" />\r\n          <script-editor-tabs value=\"false\" />\r\n          <execution-result-tabs value=\"true\" />\r\n        </visibility-settings>\r\n      </environment>\r\n    </general-settings>\r\n  </component>\r\n  <component name=\"DBNavigator.Project.StatementExecutionManager\">\r\n    <execution-variables />\r\n    <execution-variable-types />\r\n  </component>\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/dbnavigator.xml b/.idea/dbnavigator.xml
+--- a/.idea/dbnavigator.xml	(revision d32bdf70f60e38bb9edb186a3f4bda4c4b822c7a)
++++ b/.idea/dbnavigator.xml	(date 1725009006793)
+@@ -9,25 +9,31 @@
+     <value-preview-text-wrapping value="false" />
+     <value-preview-pinned value="false" />
+   </component>
+-  <component name="DBNavigator.Project.DatabaseConsoleManager">
+-    <connection id="04b8864c-a703-4e95-97c9-17a6706deab7">
+-      <console name="Connection" type="STANDARD" schema="" session="Main" />
+-    </connection>
++  <component name="DBNavigator.Project.DatabaseBrowserManager">
++    <autoscroll-to-editor value="false" />
++    <autoscroll-from-editor value="true" />
++    <show-object-properties value="true" />
++    <loaded-nodes />
+   </component>
+   <component name="DBNavigator.Project.DatabaseEditorStateManager">
+     <last-used-providers />
+   </component>
+   <component name="DBNavigator.Project.DatabaseFileManager">
+     <open-files />
+-  </component>
+-  <component name="DBNavigator.Project.DatabaseSessionManager">
+-    <connection id="04b8864c-a703-4e95-97c9-17a6706deab7" />
+   </component>
+   <component name="DBNavigator.Project.ExecutionManager">
+     <retain-sticky-names value="false" />
+   </component>
+   <component name="DBNavigator.Project.FileConnectionMappingManager">
+-    <mapping file-url="file://$PROJECT_DIR$/blogue/db/db.sql" connection-id="04b8864c-a703-4e95-97c9-17a6706deab7" session-id="MAIN" current-schema="postgres" />
++    <mapping file-url="file://$PROJECT_DIR$/blogue/db/db.sql" connection-id="virtual-postgres-connection" session-id="" current-schema="" />
++  </component>
++  <component name="DBNavigator.Project.MethodExecutionManager">
++    <method-browser />
++    <execution-history>
++      <group-entries value="true" />
++      <execution-inputs />
++    </execution-history>
++    <argument-values-cache />
+   </component>
+   <component name="DBNavigator.Project.ObjectQuickFilterManager">
+     <last-used-operator value="EQUAL" />
+@@ -37,102 +43,7 @@
+     <recently-used-interfaces />
+   </component>
+   <component name="DBNavigator.Project.Settings">
+-    <connections>
+-      <connection id="04b8864c-a703-4e95-97c9-17a6706deab7" active="true" signed="true">
+-        <database>
+-          <name value="Connection" />
+-          <description value="" />
+-          <database-type value="POSTGRES" />
+-          <config-type value="BASIC" />
+-          <database-version value="15.3" />
+-          <driver-source value="BUNDLED" />
+-          <driver-library value="" />
+-          <driver value="" />
+-          <url-type value="DATABASE" />
+-          <host value="localhost" />
+-          <port value="3306" />
+-          <database value="postgres" />
+-          <tns-folder value="" />
+-          <tns-profile value="" />
+-          <type value="USER_PASSWORD" />
+-          <user value="postgres" />
+-          <deprecated-pwd value="RGVudGUxMjM0" />
+-        </database>
+-        <properties>
+-          <auto-commit value="false" />
+-        </properties>
+-        <ssh-settings>
+-          <active value="false" />
+-          <proxy-host value="" />
+-          <proxy-port value="22" />
+-          <proxy-user value="" />
+-          <deprecated-proxy-pwd value="" />
+-          <auth-type value="PASSWORD" />
+-          <key-file value="" />
+-          <key-passphrase value="" />
+-        </ssh-settings>
+-        <ssl-settings>
+-          <active value="false" />
+-          <certificate-authority-file value="" />
+-          <client-certificate-file value="" />
+-          <client-key-file value="" />
+-        </ssl-settings>
+-        <details>
+-          <charset value="UTF-8" />
+-          <session-management value="true" />
+-          <ddl-file-binding value="true" />
+-          <database-logging value="true" />
+-          <connect-automatically value="true" />
+-          <restore-workspace value="true" />
+-          <restore-workspace-deep value="false" />
+-          <environment-type value="default" />
+-          <connectivity-timeout value="30" />
+-          <idle-time-to-disconnect value="30" />
+-          <idle-time-to-disconnect-pool value="5" />
+-          <credential-expiry-time value="10" />
+-          <max-connection-pool-size value="7" />
+-          <alternative-statement-delimiter value="" />
+-        </details>
+-        <debugger>
+-          <compile-dependencies value="true" />
+-          <tcp-driver-tunneling value="false" />
+-          <tcp-host-address value="" />
+-          <tcp-port-from value="4000" />
+-          <tcp-port-to value="4999" />
+-          <debugger-type value="ASK" />
+-        </debugger>
+-        <object-filters hide-empty-schemas="false" hide-pseudo-columns="false" hide-audit-columns="false">
+-          <object-filters />
+-          <object-type-filter use-master-settings="true">
+-            <object-type name="SCHEMA" enabled="true" />
+-            <object-type name="USER" enabled="true" />
+-            <object-type name="ROLE" enabled="true" />
+-            <object-type name="PRIVILEGE" enabled="true" />
+-            <object-type name="CHARSET" enabled="true" />
+-            <object-type name="TABLE" enabled="true" />
+-            <object-type name="VIEW" enabled="true" />
+-            <object-type name="MATERIALIZED_VIEW" enabled="true" />
+-            <object-type name="NESTED_TABLE" enabled="true" />
+-            <object-type name="COLUMN" enabled="true" />
+-            <object-type name="INDEX" enabled="true" />
+-            <object-type name="CONSTRAINT" enabled="true" />
+-            <object-type name="DATASET_TRIGGER" enabled="true" />
+-            <object-type name="DATABASE_TRIGGER" enabled="true" />
+-            <object-type name="SYNONYM" enabled="true" />
+-            <object-type name="SEQUENCE" enabled="true" />
+-            <object-type name="PROCEDURE" enabled="true" />
+-            <object-type name="FUNCTION" enabled="true" />
+-            <object-type name="PACKAGE" enabled="true" />
+-            <object-type name="TYPE" enabled="true" />
+-            <object-type name="TYPE_ATTRIBUTE" enabled="true" />
+-            <object-type name="ARGUMENT" enabled="true" />
+-            <object-type name="DIMENSION" enabled="true" />
+-            <object-type name="CLUSTER" enabled="true" />
+-            <object-type name="DBLINK" enabled="true" />
+-          </object-type-filter>
+-        </object-filters>
+-      </connection>
+-    </connections>
++    <connections />
+     <browser-settings>
+       <general>
+         <display-mode value="TABBED" />
