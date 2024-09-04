@@ -72,6 +72,10 @@
             <artifactId>rest-assured</artifactId>
             <scope>test</scope>
         </dependency>
+<!--<<<<<<< HEAD-->
+
+<!--=======-->
+<!--&gt;>>>>>> origin/master-->
         <dependency>
             <groupId>io.quarkus</groupId>
             <artifactId>quarkus-smallrye-jwt-build</artifactId>
@@ -81,6 +85,8 @@
             <artifactId>jbcrypt</artifactId>
             <version>0.4</version>
         </dependency>
+<!--<<<<<<< HEAD-->
+<!--=======-->
 
 
         <dependency>
