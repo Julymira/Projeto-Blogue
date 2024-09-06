@@ -6,6 +6,11 @@ public class CreatePostRequest {
     private String title;
     private String text;
 
+    public CreatePostRequest(String imageUrl, String title, String text) {
+        this.imageUrl = imageUrl;
+        this.title = title;
+        this.text = text;
+    }
 
     public String getImageUrl() {
         return imageUrl;

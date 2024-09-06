@@ -20,8 +20,31 @@ public class PostDAO {
         return entityManager.find(Post.class, id);
     }
 
-    public List<Post> listAll() {
+    public List<Post> listAllP() {
         TypedQuery<Post> query = entityManager.createQuery("SELECT p FROM Post p", Post.class);
+        return query.getResultList();
+    }
+
+
+
+    public List<Post> listAll(String search) {
+        // Monta a query JPQL com o filtro de busca
+        String jpql = "SELECT p FROM Post p WHERE 1 = 1";
+
+        // Se houver um parâmetro de busca, adiciona a condição com LIKE
+        if (search != null && !search.isEmpty()) {
+            jpql += " AND LOWER(p.title) LIKE LOWER(:search)";
+        }
+
+        // Cria a consulta
+        TypedQuery<Post> query = entityManager.createQuery(jpql, Post.class);
+
+        // Define o parâmetro da busca, se for passado
+        if (search != null && !search.isEmpty()) {
+            query.setParameter("search", "%" + search + "%");
+        }
+
+        // Retorna os resultados
         return query.getResultList();
     }
 

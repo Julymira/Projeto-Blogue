@@ -60,13 +60,30 @@ public class PostResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response listAllPosts() {
 
-        List<Post> posts = postBO.getPostDAO().listAll();
+        List<Post> posts = postBO.getPostDAO().listAllP();
         List<PostResponse> postResponses = posts.stream()
                 .map(PostResponse::fromEntity)
                 .collect(Collectors.toList());
 
         return Response.ok(postResponses).build();
 
+    }
+
+    /*
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response listAll(@QueryParam("titulo") String tituloFiltro) {
+        List<Post> postF = postBO.listAll(tituloFiltro);
+        return Response.ok(postF).build();
+    }
+     */
+
+    @GET
+    @Path("/filter")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response listAll(@QueryParam("search") String search) {
+        List<Post> posts = postBO.listAll(search);
+        return Response.ok(posts).build();
     }
 
     @GET

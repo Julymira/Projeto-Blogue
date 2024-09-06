@@ -5,6 +5,8 @@ import io.github.julymira.blogue.domain.model.entity.Post;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 
+import java.util.List;
+
 @ApplicationScoped
 public class PostBO {
 
@@ -41,5 +43,10 @@ public class PostBO {
     public PostDAO getPostDAO() {
         return postDAO;
     }
+
+    public List<Post> listAll(String tituloFiltro) {
+        return postDAO.listAll(tituloFiltro);
+    }
+
 
 }
