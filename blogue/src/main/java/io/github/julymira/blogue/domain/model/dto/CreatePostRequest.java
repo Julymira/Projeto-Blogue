@@ -6,6 +6,9 @@ public class CreatePostRequest {
     private String title;
     private String text;
 
+    public CreatePostRequest() {
+    }
+
     public CreatePostRequest(String imageUrl, String title, String text) {
         this.imageUrl = imageUrl;
         this.title = title;

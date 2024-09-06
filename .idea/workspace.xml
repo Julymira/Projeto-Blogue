@@ -6,9 +6,6 @@
   <component name="ChangeListManager">
     <list default="true" id="075a86c7-afdb-492e-a5a6-4367bb354b7d" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/blogue/src/main/java/io/github/julymira/blogue/domain/controller/PostResource.java" beforeDir="false" afterPath="$PROJECT_DIR$/blogue/src/main/java/io/github/julymira/blogue/domain/controller/PostResource.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/blogue/src/main/java/io/github/julymira/blogue/domain/model/bo/PostBO.java" beforeDir="false" afterPath="$PROJECT_DIR$/blogue/src/main/java/io/github/julymira/blogue/domain/model/bo/PostBO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/blogue/src/main/java/io/github/julymira/blogue/domain/model/dao/PostDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/blogue/src/main/java/io/github/julymira/blogue/domain/model/dao/PostDAO.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/blogue/src/main/java/io/github/julymira/blogue/domain/model/dto/CreatePostRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/blogue/src/main/java/io/github/julymira/blogue/domain/model/dto/CreatePostRequest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -38,15 +35,15 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "git-widget-placeholder": "BackEnd__Ju",
-    "last_opened_file_path": "C:/Users/Julyana Mira/IdeaProjects/PWproject"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;BackEnd__Ju&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/Julyana Mira/IdeaProjects/PWproject&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\Julyana Mira\IdeaProjects\PWproject\blogue\src\main\resources" />
