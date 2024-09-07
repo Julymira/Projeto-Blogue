@@ -93,6 +93,11 @@
             <artifactId>smallrye-jwt-build</artifactId>
             <version>4.5.3</version>
         </dependency>
+        <dependency>
+            <groupId>io.quarkus.qute</groupId>
+            <artifactId>qute-core</artifactId>
+            <version>3.13.2</version>
+        </dependency>
     </dependencies>
 
     <build>

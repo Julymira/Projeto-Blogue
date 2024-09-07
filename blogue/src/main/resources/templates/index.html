@@ -20,7 +20,7 @@
 
     <nav class="navbar navbar-expand-md bg-black navbar-dark">
         <div class="container-fluid">
-            <a class="navbar-brand" href="#">
+            <a class="navbar-brand" href="/">
                 <h1 class="m-0"><img class="d-block" src="./assets/logo-meteora.png" alt="Logo da loja Meteora"></h1>
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
@@ -34,13 +34,13 @@
                         <a class="nav-link active" aria-current="page" href="#">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="login.html">Logar</a>
+                        <a class="nav-link" id="login-link" href="#">Logar</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="register.html">Registrar</a>
+                        <a class="nav-link" id="register-link" href="#">Registrar</a>
                     </li>
                 </ul>
-                <form class="d-flex" role="search">
+                <form class="d-flex" role="search" action="/" method="GET" >
                     <input class="form-control me-2 rounded-0" type="search" placeholder="Digite o produto"
                         aria-label="Search">
                     <button class="btn btn-outline-light rounded-0" type="submit">Buscar</button>
@@ -48,6 +48,83 @@
             </div>
         </div>
     </nav>
+
+    <script>
+        document.getElementById('login-link').addEventListener('click', function() {
+            showLoginForm();
+        });
+
+        document.getElementById('register-link').addEventListener('click', function() {
+            showRegisterForm();
+        });
+
+        function showLoginForm() {
+            document.getElementById('form-container').innerHTML = `
+                <form id="login-form">
+                    <input type="text" id="email" placeholder="Email">
+                    <input type="password" id="password" placeholder="Senha">
+                    <button type="submit">Logar</button>
+                </form>
+            `;
+            document.getElementById('login-form').addEventListener('submit', handleLogin);
+        }
+
+        function showRegisterForm() {
+            document.getElementById('form-container').innerHTML = `
+                <form id="register-form">
+                    <input type="text" id="nome" placeholder="Nome">
+                    <input type="email" id="email" placeholder="Email">
+                    <input type="password" id="password" placeholder="Senha">
+                    <button type="submit">Registrar</button>
+                </form>
+            `;
+            document.getElementById('register-form').addEventListener('submit', handleRegister);
+        }
+
+        function handleLogin(event) {
+            event.preventDefault();
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            fetch('/users/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ email, password })
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Login successful:', data);
+                // Você pode salvar o token JWT ou fazer outras ações
+            })
+            .catch(error => console.error('Error during login:', error));
+        }
+
+        function handleRegister(event) {
+            event.preventDefault();
+            const nome = document.getElementById('nome').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            fetch('/users/register', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ nome, email, password })
+            })
+            .then(response => {
+                if (response.ok) {
+                    console.log('User registered successfully');
+                } else {
+                    console.error('Error during registration');
+                }
+            })
+            .catch(error => console.error('Error during registration:', error));
+        }
+    </script>
+
 
     <div id="carouselExampleCaptions" class="carousel slide" data-bs-ride="carousel">
         <div class="carousel-indicators">
