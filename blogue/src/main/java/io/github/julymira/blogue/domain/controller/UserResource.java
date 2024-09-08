@@ -1,12 +1,10 @@
 package io.github.julymira.blogue.domain.controller;
 
 import io.github.julymira.blogue.domain.model.bo.UserBO;
-import io.github.julymira.blogue.domain.model.dto.ResponseError;
 import io.github.julymira.blogue.domain.model.dto.UserLoginDTO;
 import io.github.julymira.blogue.domain.model.dto.UserRegisterDTO;
 import io.github.julymira.blogue.domain.model.entity.User;
 
-import io.quarkus.hibernate.orm.panache.PanacheQuery;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.*;
@@ -27,7 +25,15 @@ public class UserResource {
     @POST
     @Path("/register")
     @Transactional
-    public Response createUser(UserRegisterDTO userRegisterDTO){
+    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+    public Response createUser(@FormParam("name") String name,
+                               @FormParam("email") String email,
+                               @FormParam("password") String password) {
+        UserRegisterDTO userRegisterDTO = new UserRegisterDTO();
+        userRegisterDTO.setName(name);
+        userRegisterDTO.setEmail(email);
+        userRegisterDTO.setPassword(password);
+
         userBO.saveUser(userRegisterDTO);
         return Response.ok().build();
     }
@@ -35,11 +41,22 @@ public class UserResource {
 
     @POST
     @Path("/login")
-    public Response login(UserLoginDTO userLoginDTO){
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public String login(UserLoginDTO userLoginDTO){
         String token = userBO.login(userLoginDTO);
-
-        return Response.ok(token).build();
+        return Response.ok(token).build().toString();
     }
+
+    @POST
+    @Path("/logout")
+    public Response logout(){
+
+        Response res = userBO.logout();
+
+        return Response.ok(res).build();
+    }
+
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public  Response listAllUsers(){
