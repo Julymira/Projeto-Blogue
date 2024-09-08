@@ -82,10 +82,9 @@ public class CommentResource {
                 .map(CommentResponse::fromEntity)
                 .collect(Collectors.toList());
 
+
         return Response.ok(commentResponses).build();
     }
-
-
 
 
 
