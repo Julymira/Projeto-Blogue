@@ -103,4 +103,17 @@ public class PostResource {
         return Response.ok(postResponses).build();
     }
 
+
+    @GET
+    @Path("/posts/{postId}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getPostById(@PathParam("postId") Long postId) {
+        Post post = postBO.getPostDAO().findById(postId);
+        if (post == null) {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+        return Response.ok(PostResponse.fromEntity(post)).build();
+    }
+
+
 }
