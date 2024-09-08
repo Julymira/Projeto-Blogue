@@ -1,8 +1,6 @@
 package io.github.julymira.blogue.domain.model.bo;
 
 
-import io.vertx.ext.auth.impl.jose.JWT;
-
 import io.github.julymira.blogue.domain.model.dao.UserDAO;
 import io.github.julymira.blogue.domain.model.dto.UserLoginDTO;
 import io.github.julymira.blogue.domain.model.entity.User;
@@ -11,6 +9,7 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import io.smallrye.jwt.build.Jwt;
 import jakarta.ws.rs.NotAuthorizedException;
+import jakarta.ws.rs.core.NewCookie;
 import jakarta.ws.rs.core.Response;
 import org.mindrot.jbcrypt.BCrypt;
 
@@ -50,12 +49,33 @@ public class UserBO {
 
          String token = Jwt.issuer("blogue")
                         .subject("blogue")
-                        .groups(new HashSet<>(Arrays.asList("admin", "writer")))
+                         .groups(new HashSet<>(Arrays.asList("admin", "writer")))
                         .expiresAt(System.currentTimeMillis() + 3600)
                         .sign();
 
+        /*
 
-        return "Logado com sucesso!";
+        String token = Jwt.issuer("blogue")
+                        .subject("blogue")
+                        .claim("userId", userId)  // Adiciona o userId como uma claim
+                        .expiresAt(System.currentTimeMillis() + 3600)
+                        .sign();
+
+         */
+
+        //NewCookie jwtCookie = new NewCookie("jwt-token", token, "/", null, "JWT Token", 3600, false, true);
+
+        //return Response.ok("Logado com sucesso!").cookie(jwtCookie).build();
+
+        return token;
+    }
+
+    public Response logout(){
+
+        NewCookie jwtCookie = new NewCookie("jwt-token", "", "/", null, "JWT Token",
+                0, false, true);
+
+        return Response.ok("Logout Efetuado").cookie(jwtCookie).build();
     }
 
 
