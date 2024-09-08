@@ -7,8 +7,8 @@ public class CommentResponse {
     private Long id;
     private String comment_text;
     private Long postId;
-
     private Long userId;
+    private String userName;
 
     public CommentResponse(Long id, String comment_text, Long postId, Long userId) {
         this.id = id;
@@ -17,12 +17,21 @@ public class CommentResponse {
         this.userId = userId;
     }
 
+    public CommentResponse(Long id, String comment_text, Long postId, Long userId, String userName) {
+        this.id = id;
+        this.comment_text = comment_text;
+        this.postId = postId;
+        this.userId = userId;
+        this.userName = userName;
+    }
+
     public static CommentResponse fromEntity(Comment comment){
         return new CommentResponse(
                 comment.getId(),
                 comment.getComment_text(),
                 comment.getPost().getId(),
-                comment.getUser().getId()
+                comment.getUser().getId(),
+                comment.getUser().getName()
         );
     }
 
@@ -56,5 +65,13 @@ public class CommentResponse {
 
     public void setUserId(Long userId) {
         this.userId = userId;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 }
