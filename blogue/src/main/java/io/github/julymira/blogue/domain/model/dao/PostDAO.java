@@ -21,7 +21,8 @@ public class PostDAO {
     }
 
     public List<Post> listAllP() {
-        TypedQuery<Post> query = entityManager.createQuery("SELECT p FROM Post p", Post.class);
+        // Ordena pela data de criação em ordem decrescente
+        TypedQuery<Post> query = entityManager.createQuery("SELECT p FROM Post p ORDER BY p.dateTime DESC", Post.class);
         return query.getResultList();
     }
 
