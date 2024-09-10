@@ -50,7 +50,7 @@
 
 <div class="register-container">
     <h1>Faça Seu Cadastro</h1>
-    <form action="http://localhost:8080/users/register" method="POST">
+    <form id="registerForm">
         <label for="name">Nome:</label>
         <input type="text" id="name" name="name" required>
 
@@ -60,11 +60,38 @@
         <label for="password">Senha:</label>
         <input type="password" id="password" name="password" required>
 
-        <a class="btn btn-primary" href="login.html">Cadastrar</a>
+        <a href="login.html" class="btn btn-primary" id="submitLink">Cadastrar</a>
     </form>
 
     <a type="button" class="btn btn-default" href="login.html">Já tem conta? Faça seu login</a>
 </div>
+
+<script>
+    document.getElementById("submitLink").addEventListener("click", async function(event) {
+        event.preventDefault();  // Impede o comportamento padrão do link
+
+        // Pega os dados do formulário
+        const form = document.getElementById("registerForm");
+        const formData = new FormData(form);
+
+        try {
+            const response = await fetch("http://localhost:8080/users/register", {
+                method: "POST",
+                body: new URLSearchParams(formData) // Transforma o FormData em URL-encoded
+            });
+
+            if (response.ok) {
+                // Redireciona para a página de login após sucesso
+                window.location.href = "login.html";
+            } else {
+                alert("Erro no cadastro. Tente novamente.");
+            }
+        } catch (error) {
+            console.error("Erro:", error);
+            alert("Erro ao processar o cadastro.");
+        }
+    });
+</script>
 
 
 
