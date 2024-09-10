@@ -5,6 +5,7 @@ import io.github.julymira.blogue.domain.model.dto.UserLoginDTO;
 import io.github.julymira.blogue.domain.model.dto.UserRegisterDTO;
 import io.github.julymira.blogue.domain.model.entity.User;
 
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.*;
@@ -43,10 +44,17 @@ public class UserResource {
     @Path("/login")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public String login(UserLoginDTO userLoginDTO){
+    @RolesAllowed("admins")
+    public Response login(UserLoginDTO userLoginDTO){
+
+       /*
         String token = userBO.login(userLoginDTO);
         return Response.ok(token).build().toString();
-    }
+        */
+
+        return userBO.login(userLoginDTO);
+
+       }
 
     @POST
     @Path("/logout")

@@ -11,6 +11,7 @@ import io.smallrye.jwt.build.Jwt;
 import jakarta.ws.rs.NotAuthorizedException;
 import jakarta.ws.rs.core.NewCookie;
 import jakarta.ws.rs.core.Response;
+import org.eclipse.microprofile.jwt.Claims;
 import org.mindrot.jbcrypt.BCrypt;
 
 import java.util.Arrays;
@@ -41,17 +42,23 @@ public class UserBO {
     }
 
 
-    public String login(UserLoginDTO userLoginDTO) {
+    public Response login(UserLoginDTO userLoginDTO) {
         User user = userDAO.findByEmail(userLoginDTO.getEmail());
         if (user == null || !BCrypt.checkpw(userLoginDTO.getPassword(), user.getPassword())) {
             throw new NotAuthorizedException("email ou senha inválidos");
         }
 
-         String token = Jwt.issuer("blogue")
+
+         String token = Jwt.issuer("http://localhost:8080")
                         .subject("blogue")
-                         .groups(new HashSet<>(Arrays.asList("admin", "writer")))
+                        .groups("admin")
+                        .upn("jdoe@quarkus.io")
+                        .claim(Claims.email, userLoginDTO.getEmail())
                         .expiresAt(System.currentTimeMillis() + 3600)
                         .sign();
+
+//        ResponseDTO message = new ResponseDTO(token);
+
 
         /*
 
@@ -67,7 +74,7 @@ public class UserBO {
 
         //return Response.ok("Logado com sucesso!").cookie(jwtCookie).build();
 
-        return token;
+        return Response.status(Response.Status.OK).entity(token).build();
     }
 
     public Response logout(){

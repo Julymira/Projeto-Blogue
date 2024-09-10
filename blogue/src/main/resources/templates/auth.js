@@ -13,13 +13,17 @@ async function login(event) {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({ email, password })
-        });
+        })
 
-        if (response.ok) {
+        const data = await response.text();
+
+        if (response.ok){
+            console.log(data);
             console.log("response", response);
-            console.log("response.token", response.token);
-            setCookie('authToken', response.token, 1); // Armazena o token por 1 dia
-            document.getElementById("responseMessage").innerText = `Login bem-sucedido: ${data.message}`;
+            console.log("response.text", response.text());
+            console.log("data", data);
+            setCookie('authToken', data, 1); // Armazena o token por 1 dia
+            document.getElementById("responseMessage").innerText = `Login bem-sucedido`;
         } else {
             document.getElementById("responseMessage").innerText = "Falha no login: Usuário ou senha incorretos.";
         }
