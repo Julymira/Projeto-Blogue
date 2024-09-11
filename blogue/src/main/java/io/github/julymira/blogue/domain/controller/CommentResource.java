@@ -1,5 +1,6 @@
 package io.github.julymira.blogue.domain.controller;
 
+import io.github.julymira.blogue.domain.model.bo.AuditLogBO;
 import io.github.julymira.blogue.domain.model.bo.CommentBO;
 import io.github.julymira.blogue.domain.model.dao.PostDAO;
 import io.github.julymira.blogue.domain.model.dao.UserDAO;
@@ -30,6 +31,10 @@ public class CommentResource {
 
     @Inject
     UserDAO userDAO;
+
+    @Inject
+    private AuditLogBO auditLogBO;
+
 
     @POST
     @Path("/{postId}/{userId}/AddComment")
@@ -62,6 +67,8 @@ public class CommentResource {
         } catch (IllegalArgumentException e) {
             return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
         }
+
+        auditLogBO.logAction("Comentário criado", userId);
 
         return Response.status(Response.Status.CREATED).build();
 

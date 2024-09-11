@@ -1,6 +1,7 @@
 package io.github.julymira.blogue.domain.controller;
 
 
+import io.github.julymira.blogue.domain.model.bo.AuditLogBO;
 import io.github.julymira.blogue.domain.model.bo.PostBO;
 import io.github.julymira.blogue.domain.model.dao.UserDAO;
 import io.github.julymira.blogue.domain.model.dto.CreatePostRequest;
@@ -29,6 +30,10 @@ public class PostResource {
     @Inject
     UserDAO userDAO;
 
+    @Inject
+    private AuditLogBO auditLogBO;
+
+
     @POST
     @Path("/{userId}/AddPosts")
     @Produces(MediaType.APPLICATION_JSON)
@@ -51,6 +56,8 @@ public class PostResource {
         } catch (IllegalArgumentException e) {
             return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
         }
+
+        auditLogBO.logAction("Post criado", userId);
 
         return Response.status(Response.Status.CREATED).build();
     }
@@ -112,6 +119,7 @@ public class PostResource {
         if (post == null) {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
+
         return Response.ok(PostResponse.fromEntity(post)).build();
     }
 
