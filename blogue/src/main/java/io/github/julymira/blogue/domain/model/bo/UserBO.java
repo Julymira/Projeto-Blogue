@@ -57,22 +57,7 @@ public class UserBO {
                         .expiresAt(System.currentTimeMillis() + 3600)
                         .sign();
 
-//        ResponseDTO message = new ResponseDTO(token);
 
-
-        /*
-
-        String token = Jwt.issuer("blogue")
-                        .subject("blogue")
-                        .claim("userId", userId)  // Adiciona o userId como uma claim
-                        .expiresAt(System.currentTimeMillis() + 3600)
-                        .sign();
-
-         */
-
-        //NewCookie jwtCookie = new NewCookie("jwt-token", token, "/", null, "JWT Token", 3600, false, true);
-
-        //return Response.ok("Logado com sucesso!").cookie(jwtCookie).build();
 
         return Response.status(Response.Status.OK).entity(token).build();
     }
