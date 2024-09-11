@@ -27,3 +27,10 @@ CREATE TABLE COMMENTS(
 	user_id bigint not null references USERS(id),
 	post_id bigint not null references POSTS(id)
 )
+
+CREATE TABLE audit_log (
+    id SERIAL PRIMARY KEY,
+    action VARCHAR(255),
+    user_id INT,
+    timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
