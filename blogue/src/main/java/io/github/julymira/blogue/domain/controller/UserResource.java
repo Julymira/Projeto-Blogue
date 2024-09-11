@@ -22,7 +22,6 @@ public class UserResource {
     @Inject
     UserBO userBO;
 
-
     @POST
     @Path("/register")
     @Transactional
@@ -36,6 +35,8 @@ public class UserResource {
         userRegisterDTO.setPassword(password);
 
         userBO.saveUser(userRegisterDTO);
+
+
         return Response.ok().build();
     }
 
