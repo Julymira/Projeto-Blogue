@@ -29,8 +29,8 @@ CREATE TABLE COMMENTS(
 )
 
 CREATE TABLE audit_log (
-    id SERIAL PRIMARY KEY,
+    id bigserial PRIMARY KEY,
     action VARCHAR(255),
-    user_id INT,
+    user_id BIGINT,
     timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
