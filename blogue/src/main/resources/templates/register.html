@@ -66,34 +66,7 @@
     <a type="button" class="btn btn-default" href="login.html">Já tem conta? Faça seu login</a>
 </div>
 
-<script>
-    document.getElementById("submitLink").addEventListener("click", async function(event) {
-        event.preventDefault();  // Impede o comportamento padrão do link
-
-        // Pega os dados do formulário
-        const form = document.getElementById("registerForm");
-        const formData = new FormData(form);
-
-        try {
-            const response = await fetch("http://localhost:8080/users/register", {
-                method: "POST",
-                body: new URLSearchParams(formData) // Transforma o FormData em URL-encoded
-            });
-
-            if (response.ok) {
-                // Redireciona para a página de login após sucesso
-                window.location.href = "login.html";
-            } else {
-                alert("Erro no cadastro. Tente novamente.");
-            }
-        } catch (error) {
-            console.error("Erro:", error);
-            alert("Erro ao processar o cadastro.");
-        }
-    });
-</script>
-
-
+<script src="/templates/scripts/submitLink.js"> </script>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
