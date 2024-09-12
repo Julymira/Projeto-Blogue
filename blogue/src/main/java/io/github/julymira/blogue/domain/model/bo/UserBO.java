@@ -14,8 +14,6 @@ import jakarta.ws.rs.core.Response;
 import org.eclipse.microprofile.jwt.Claims;
 import org.mindrot.jbcrypt.BCrypt;
 
-import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
 
 @ApplicationScoped
