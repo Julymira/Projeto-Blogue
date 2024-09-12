@@ -60,14 +60,6 @@ public class UserBO {
         return Response.status(Response.Status.OK).entity(token).build();
     }
 
-    public Response logout(){
-
-        NewCookie jwtCookie = new NewCookie("jwt-token", "", "/", null, "JWT Token",
-                0, false, true);
-
-        return Response.ok("Logout Efetuado").cookie(jwtCookie).build();
-    }
-
 
     public List<User> listAllUsers() {
         return userDAO.listAll();

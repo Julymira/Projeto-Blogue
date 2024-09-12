@@ -17,13 +17,10 @@ async function login(event) {
 
         const data = await response.text();
 
-        if (response.ok){
-            console.log(data);
-            console.log("response", response);
-            console.log("response.text", response.text());
-            console.log("data", data);
+        if (response.ok) {
             setCookie('authToken', data, 1); // Armazena o token por 1 dia
-            document.getElementById("responseMessage").innerText = `Login bem-sucedido`;
+            document.getElementById("responseMessage").innerText = "Login bem-sucedido";
+            window.location.href = "index.html"; // Redireciona para a página HOME
         } else {
             document.getElementById("responseMessage").innerText = "Falha no login: Usuário ou senha incorretos.";
         }

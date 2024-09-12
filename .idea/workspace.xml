@@ -6,7 +6,13 @@
   <component name="ChangeListManager">
     <list default="true" id="075a86c7-afdb-492e-a5a6-4367bb354b7d" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/blogue/db/db.sql" beforeDir="false" afterPath="$PROJECT_DIR$/blogue/db/db.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/blogue/src/main/java/io/github/julymira/blogue/domain/controller/UserResource.java" beforeDir="false" afterPath="$PROJECT_DIR$/blogue/src/main/java/io/github/julymira/blogue/domain/controller/UserResource.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/blogue/src/main/java/io/github/julymira/blogue/domain/model/bo/UserBO.java" beforeDir="false" afterPath="$PROJECT_DIR$/blogue/src/main/java/io/github/julymira/blogue/domain/model/bo/UserBO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/blogue/src/main/resources/templates/auth.js" beforeDir="false" afterPath="$PROJECT_DIR$/blogue/src/main/resources/templates/scripts/auth.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/blogue/src/main/resources/templates/criarPost.html" beforeDir="false" afterPath="$PROJECT_DIR$/blogue/src/main/resources/templates/criarPost.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/blogue/src/main/resources/templates/exibePost.html" beforeDir="false" afterPath="$PROJECT_DIR$/blogue/src/main/resources/templates/exibePost.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/blogue/src/main/resources/templates/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/blogue/src/main/resources/templates/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/blogue/src/main/resources/templates/login.html" beforeDir="false" afterPath="$PROJECT_DIR$/blogue/src/main/resources/templates/login.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -50,6 +56,7 @@
       <recent name="io.github.julymira.blogue.domain.interceptor" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\Julyana Mira\IdeaProjects\PWproject\blogue\src\main\resources\templates\scripts" />
       <recent name="C:\Users\Julyana Mira\IdeaProjects\PWproject\blogue\src\main\resources" />
     </key>
   </component>

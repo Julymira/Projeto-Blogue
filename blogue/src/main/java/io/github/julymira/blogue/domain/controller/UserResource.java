@@ -48,23 +48,9 @@ public class UserResource {
     @RolesAllowed("admins")
     public Response login(UserLoginDTO userLoginDTO){
 
-       /*
-        String token = userBO.login(userLoginDTO);
-        return Response.ok(token).build().toString();
-        */
-
         return userBO.login(userLoginDTO);
 
        }
-
-    @POST
-    @Path("/logout")
-    public Response logout(){
-
-        Response res = userBO.logout();
-
-        return Response.ok(res).build();
-    }
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
